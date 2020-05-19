@@ -1,0 +1,54 @@
+plugins {
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+version = '1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Include dependent libraries in archive.
+mainClassName = "com.opentext.explore.importer.twitter.TwitterImporterManager"
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'OpenText Explore Twitter Importer',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'com.opentext.explore.importer.twitter.TwitterImporterManager'
+    }
+ 
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    
+    //https://discuss.gradle.org/t/generate-runnable-jar-pakage-dependencies/28171
+	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
+
+
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+dependencies {
+    // This dependency is exported to consumers, that is to say found on their compile classpath.
+    api 'org.apache.commons:commons-math3:3.6.1'
+
+    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
+    implementation 'com.google.guava:guava:28.2-jre'
+	
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'		
+    
+	// https://mvnrepository.com/artifact/commons-cli/commons-cli
+	compile group: 'commons-cli', name: 'commons-cli', version: '1.4'    
+	
+	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
+	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.1'
+}
