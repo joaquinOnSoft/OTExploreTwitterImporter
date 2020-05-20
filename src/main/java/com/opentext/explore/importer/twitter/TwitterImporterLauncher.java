@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -17,10 +15,7 @@ import org.apache.commons.cli.ParseException;
 
 import com.opentext.explore.util.FileUtil;
 
-import twitter4j.Status;
-
-public class TwitterImporterManager {
-
+public class TwitterImporterLauncher {
 	public static void main(String[] args) {
 		Properties prop = new Properties();
 		InputStream file = null;
@@ -45,8 +40,9 @@ public class TwitterImporterManager {
 				if(FileUtil.isFile(configFilePath)) {
 					file = new FileInputStream(configFilePath);
 					prop.load(file);
-
-					importTwitts(prop);
+					
+					TwitterImporter importer = new TwitterImporter(null);
+					importer.start();
 				}
 			}
 
@@ -74,22 +70,4 @@ public class TwitterImporterManager {
 
 	}
 
-
-	private static void importTwitts(Properties prop) {
-		// Creating shared object 
-		BlockingQueue<Status> sharedQueue = new LinkedBlockingQueue<Status>();
-
-		// Creating Producer and Consumer Thread  
-		Thread prodThread = new Thread(new TwitterImporterProducer(sharedQueue, prop));
-
-		// Producer thread START 
-		prodThread.start();
-
-		int numThreads = 1;
-		for(int i = 0; i < numThreads; i++){ 
-			Thread consThread = new Thread(new TwitterImporterConsumer(sharedQueue, prop)); 
-			// Consumer thread START 
-			consThread.start(); }
-		}
-
-	}
+}

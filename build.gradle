@@ -50,5 +50,12 @@ dependencies {
 	compile group: 'commons-cli', name: 'commons-cli', version: '1.4'    
 	
 	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
-	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.1'
+	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.7'
+	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-stream
+	compile group: 'org.twitter4j', name: 'twitter4j-stream', version: '4.0.7'
+	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-async
+	compile group: 'org.twitter4j', name: 'twitter4j-async', version: '4.0.7'
+	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-appengine
+	compile group: 'org.twitter4j', name: 'twitter4j-appengine', version: '4.0.7'
+
 }
