@@ -26,7 +26,6 @@ public class TwitterImporterLauncher {
 		actionConfig.setRequired(true);
 		options.addOption(actionConfig);
 		
-
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
 		CommandLine cmd = null;
@@ -48,10 +47,10 @@ public class TwitterImporterLauncher {
 
 		}
 		catch (IOException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 		catch (ParseException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 			formatter.printHelp("java -jar file.jar --config/-c 'config file path'", options);
 
 			System.exit(-1);	
@@ -62,7 +61,7 @@ public class TwitterImporterLauncher {
 					file.close();
 				} 
 				catch (IOException e2) {
-					System.out.println(e2.getMessage());
+					System.err.println(e2.getMessage());
 					System.exit(-1);
 				}
 			}
