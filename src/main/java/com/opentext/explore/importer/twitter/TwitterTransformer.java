@@ -1,5 +1,8 @@
 package com.opentext.explore.importer.twitter;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +17,7 @@ import twitter4j.Status;
 
 /**
  * Transform a Twitter Status in to a XML.
- * The XML format fit the requirements of a Micro Media content 
+ * The XML format fit the requirements of a "Micro Media" content 
  * in Solr for OpenText Explore.
  * 
  *  The format looks like this:
@@ -39,19 +42,13 @@ import twitter4j.Status;
  * @author Joaquín Garzón
  */
 public class TwitterTransformer {
-	
-	/**
-	 * SEE: How to create XML file with specific structure in Java 
-	 * https://stackoverflow.com/questions/23520208/how-to-create-xml-file-with-specific-structure-in-java
-	 * @param statuses
-	 * @return
-	 */
-	public static String statusToString(List<Status> statuses) {
-		String xml = null;
+
+	private static Document statusToDoc(List<Status> statuses) {
+		Document doc = null;
 		
 		if(statuses != null && statuses.size() > 0) {
 			
-			Document doc=new Document();
+			doc=new Document();
 			//Root Element
 			Element root=new Element("add");
 			
@@ -73,8 +70,41 @@ public class TwitterTransformer {
 				root.addContent(eDoc);
 			}
 			
-			//Define root element like root
-			doc.setRootElement(root);
+			doc.addContent(root);
+		}
+		
+		return doc;
+	}
+	
+	/**
+	 * Generate a XML file using the given Twitter statuses 
+	 * @param statuses - List of Twitter statuses
+	 * @param fileName - File name of the XML that will be generated
+	 * @throws IOException
+	 */
+	public static void statusToXMLFile(List<Status> statuses, String fileName) throws IOException {
+		Document doc = statusToDoc(statuses);
+
+		if(doc != null) {
+			//Create the XML
+			XMLOutputter outter=new XMLOutputter();
+			outter.setFormat(Format.getPrettyFormat());			
+			outter.output(doc, new FileWriter(new File(fileName)));
+		}		
+	}
+	
+	/**
+	 * Generate a XML string using the given Twitter statuses
+	 * SEE: How to create XML file with specific structure in Java 
+	 * https://stackoverflow.com/questions/23520208/how-to-create-xml-file-with-specific-structure-in-java
+	 * @param statuses
+	 * @return
+	 */
+	public static String statusToString(List<Status> statuses) {
+		String xml = null;
+		Document doc = statusToDoc(statuses);
+
+		if(doc != null) {
 			//Create the XML
 			XMLOutputter outter=new XMLOutputter();
 			outter.setFormat(Format.getPrettyFormat());			

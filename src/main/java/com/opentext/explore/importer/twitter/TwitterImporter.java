@@ -13,7 +13,7 @@ import twitter4j.TwitterStreamFactory;
 
 public class TwitterImporter {
 	public TwitterImporter(Properties prop) {
-		
+		// TODO read properties
 	}
 
 	public void start() {
@@ -26,9 +26,7 @@ public class TwitterImporter {
 		StatusListener listener = new StatusListener(){
 
 			@Override
-			public void onException(Exception ex) {
-				// TODO Auto-generated method stub
-				
+			public void onException(Exception ex) {				
 			}
 
 			@Override
@@ -37,27 +35,23 @@ public class TwitterImporter {
 			}
 
 			@Override
-			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-				// TODO Auto-generated method stub				
+			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {				
 			}
 
 			@Override
 			public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-				// TODO Auto-generated method stub				
 			}
 
 			@Override
 			public void onScrubGeo(long userId, long upToStatusId) {
-				// TODO Auto-generated method stub				
 			}
 
 			@Override
 			public void onStallWarning(StallWarning warning) {
-				// TODO Auto-generated method stub				
 			}
 	    };
-	    
-	    
+	    	   
+		// TODO read properties
 	    TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 	    twitterStream.addListener(listener);
 
