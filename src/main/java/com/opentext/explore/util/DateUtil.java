@@ -17,7 +17,7 @@ public class DateUtil {
 	}
 
 	public static String dateToUTC(Date d) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");  
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");  
 		return dateFormat.format(d);  
 	}	
 	
@@ -29,6 +29,6 @@ public class DateUtil {
 	 * @throws ParseException 
 	 */	
 	public static Date utcToDate(String utc) throws ParseException {
-		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(utc);  
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(utc);  
 	}
 }

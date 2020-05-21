@@ -29,7 +29,7 @@ public class TestDateUtil extends TestCase {
 
 	@Test
 	public void testUtcToDate() {
-		final String utcRef = "2020-05-21T16:30:52.123Z";
+		final String utcRef = "2020-05-21T16:30:52Z";
 		
 		try {
 			Date utc = DateUtil.utcToDate(utcRef);
@@ -38,4 +38,15 @@ public class TestDateUtil extends TestCase {
 			fail(e.getMessage());
 		}
 	}	
+	
+	@Test
+	public void testDateToUTC() {
+		Calendar now = GregorianCalendar.getInstance();
+		String nowStr = DateUtil.dateToUTC(now.getTime());
+		
+		assertNotNull(nowStr);
+		assertEquals(now.get(Calendar.YEAR), subStringToInt(nowStr, 0, 4));
+		assertEquals(now.get(Calendar.MONTH) + 1, subStringToInt(nowStr, 5, 7));
+		assertEquals(now.get(Calendar.DAY_OF_MONTH), subStringToInt(nowStr, 8, 10));		
+	}
 }

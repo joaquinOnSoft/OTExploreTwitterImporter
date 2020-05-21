@@ -1,11 +1,14 @@
 package com.opentext.explore.importer.twitter;
 
+import java.util.Date;
 import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import com.opentext.explore.util.DateUtil;
 
 import twitter4j.Status;
 
@@ -61,8 +64,12 @@ public class TwitterTransformer {
 				eDoc.addContent(createElementField("author_name", status.getUser().getName()));
 				eDoc.addContent(createElementField("ID", status.getId()));
 				eDoc.addContent(createElementField("type", "Micro Media"));	
+				eDoc.addContent(createElementField("published_date", status.getCreatedAt()));
+				eDoc.addContent(createElementField("date_time", status.getCreatedAt()));
 				eDoc.addContent(createElementField("content", status.getText()));				
-
+				eDoc.addContent(createElementField(status.getLang() + "_content", status.getText()));				
+				eDoc.addContent(createElementField("profile_img", status.getUser().getBiggerProfileImageURLHttps()));				
+			
 				root.addContent(eDoc);
 			}
 			
@@ -76,7 +83,11 @@ public class TwitterTransformer {
 		
 		return xml;
 	}
-
+	
+	private static Element createElementField(String name, Date content) {
+		return createElementField(name, DateUtil.dateToUTC(content));
+	}
+		
 	private static Element createElementField(String name, long content) {
 		return createElementField(name, Long.toString(content));
 	}
