@@ -33,7 +33,7 @@ import twitter4j.Status;
  *    	</doc>
  * 	</add>
  * </pre>
- * @author joaquin
+ * @author Joaquín Garzón
  */
 public class TwitterTransformer {
 	
@@ -54,17 +54,15 @@ public class TwitterTransformer {
 			
 			for (Status status : statuses) {
 				Element eDoc = new Element("doc");
-				
-				Element eId = new Element("field");
-				eId.setAttribute("name", "ID");
-				eId.addContent(Long.toString(status.getId()));
-				
-				Element eContent = new Element("field");
-				eContent.setAttribute("name", "content");
-				eContent.addContent(status.getText());
-				
-				eDoc.addContent(eId);
-				eDoc.addContent(eContent);
+							
+				eDoc.addContent(createElementField("reference_id", status.getId()));
+				eDoc.addContent(createElementField("interaction_id", status.getId()));
+				eDoc.addContent(createElementField("title", "TweetID: " + status.getId()));
+				eDoc.addContent(createElementField("author_name", status.getUser().getName()));
+				eDoc.addContent(createElementField("ID", status.getId()));
+				eDoc.addContent(createElementField("type", "Micro Media"));	
+				eDoc.addContent(createElementField("content", status.getText()));				
+
 				root.addContent(eDoc);
 			}
 			
@@ -77,5 +75,16 @@ public class TwitterTransformer {
 		}
 		
 		return xml;
+	}
+
+	private static Element createElementField(String name, long content) {
+		return createElementField(name, Long.toString(content));
+	}
+
+	private static Element createElementField(String name, String content) {
+		Element elementField = new Element("field");
+		elementField.setAttribute("name", name);
+		elementField.addContent(content);
+		return elementField;
 	}
 }
