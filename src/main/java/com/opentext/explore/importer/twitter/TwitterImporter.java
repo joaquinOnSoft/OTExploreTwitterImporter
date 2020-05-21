@@ -61,11 +61,17 @@ public class TwitterImporter {
 	    TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 	    twitterStream.addListener(listener);
 
-	    FilterQuery fq = new FilterQuery();
-	    String keywords[] = {"Ayuntamiento de Madrid","Ayto Madrid","Madrid"};
-	    fq.track(keywords);
-	    fq.language(new String[] { "es" });
+	    FilterQuery filter = new FilterQuery();
+	    String keywords[] = {"Ayuntamiento de Madrid","Ayto Madrid", "@MADRID",
+	    		"@JMD_Sanblas", "@JMDArganzuela", "@JMDBarajas", "@JMDCarabanchel",
+	    		"@JMDCentro", "@JMDChamartin", "@JMDChamberi", "@JMDCiudadLineal",
+	    		"@JMDFuencarral", "@jmdhortaleza", "@JMDLatina", "@MoncloaAravaca",
+	    		"@JMDmoratalaz", "@JMDpvallecas", "@JMDretiro", "@JMDSalamanca",
+	    		"@JMD_Sanblas", "@distritotetuan", "@JMDTetuan", "@jmd_usera",
+	    		"@jmdvicalvaro", "@JMDvivallecas", "@JMD_villaverde"};
+	    filter.track(keywords);
+	    filter.language(new String[] { "es" });
 	    
-	    twitterStream.filter(fq);
+	    twitterStream.filter(filter);
 	}
 }
