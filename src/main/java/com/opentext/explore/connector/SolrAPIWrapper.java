@@ -1,10 +1,12 @@
 package com.opentext.explore.connector;
 
+import java.io.File;
 import java.net.URISyntaxException;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private String urlBase;
@@ -12,7 +14,7 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private static final String METHOD_OTCA_BATCH_UPDATE = "otcaBatchUpdate";
 
 	public SolrAPIWrapper() {
-		this.urlBase = " http://localhost:8983/solr/interaction/";
+		this.urlBase = "http://localhost:8983/solr/interaction/";
 	}
 	
 	
@@ -29,7 +31,7 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 
 	 * @return
 	 */
-	public String otcaBatchUpdate() {
+	public String otcaBatchUpdate(File update) {
 		String response = null;
 		URIBuilder builder = null;
 		
@@ -46,13 +48,21 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 				.setParameter("otca.diarisation.clientMapping", "2")
 				.setParameter("otca.diarisation.agentMapping", "1");
 			
-			HttpGet request = new HttpGet();
-
-	        // add request headers
-	        request.addHeader(HttpHeaders.ACCEPT_CHARSET, "UTF-8");
-	        response = execute(request);			
+			HttpGetWithEntity request;
+			try {
+				request = new HttpGetWithEntity();
+				request.setURI(builder.build());
+		        // add request headers
+		        request.addHeader(HttpHeaders.ACCEPT_CHARSET, "UTF-8");
+		        // build HttpEntity object and assign the file that need to be uploaded 
+		        HttpEntity entity = MultipartEntityBuilder.create().addBinaryBody("upfile", update).build();
+		        request.setEntity(entity);
+		        response = execute(request);	
+			} catch (URISyntaxException e) {
+				System.err.println(e.getMessage());
+			}
 		}
 		
-		return response
+		return response;
 	}
 }

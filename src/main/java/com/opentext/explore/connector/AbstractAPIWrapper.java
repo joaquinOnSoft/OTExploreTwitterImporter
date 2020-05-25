@@ -35,7 +35,7 @@ public abstract class AbstractAPIWrapper {
 
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 				
-		try {
+		try {			
 			response = httpClient.execute(request);
 
 			// Get HttpResponse Status
