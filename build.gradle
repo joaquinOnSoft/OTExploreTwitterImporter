@@ -2,18 +2,20 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
-version = '1.0'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+	version = '20.2'
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 // Include dependent libraries in archive.
-mainClassName = "com.opentext.explore.importer.twitter.TwitterImporterManager"
+mainClassName = "com.opentext.explore.importer.twitter.TwitterImporterLauncher"
 
 jar {
     manifest {
         attributes 'Implementation-Title': 'OpenText Explore Twitter Importer',  
         	'Implementation-Version': version,
-        	'Main-Class': 'com.opentext.explore.importer.twitter.TwitterImporterManager'
+        	'Main-Class': 'com.opentext.explore.importer.twitter.TwitterImporterLauncher'
     }
  
     from {
@@ -22,6 +24,8 @@ jar {
     
     //https://discuss.gradle.org/t/generate-runnable-jar-pakage-dependencies/28171
 	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+	
+	version = '20.2'
 }
 
 
@@ -34,36 +38,53 @@ repositories {
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     //api 'org.apache.commons:commons-math3:3.6.1'
-
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:28.2-jre'
+    //implementation 'com.google.guava:guava:28.2-jre'
+	
+	//
+	// IMPORTANT: 
+	// Just replace:
+	//    'compile' with 'implementation' (if you don't need transitivity) or api (if you need transitivity)
+	//    'testCompile' with 'testImplementation'
+	// 
+	// https://stackoverflow.com/questions/44493378/whats-the-difference-between-implementation-and-compile-in-gradle
+	//
+		
+	// https://mvnrepository.com/artifact/commons-cli/commons-cli
+	implementation 'commons-cli:commons-cli:1.4'    
+	
+	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
+	implementation 'org.twitter4j:twitter4j-core:4.0.7'
+	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-stream
+	implementation 'org.twitter4j:twitter4j-stream:4.0.7'
+
+	// https://mvnrepository.com/artifact/org.jdom/jdom
+	implementation 'org.jdom:jdom:2.0.0'
+
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
+	implementation 'org.apache.httpcomponents:httpcore:4.4.13'	
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+	implementation 'org.apache.httpcomponents:httpclient:4.5.12'	
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
+	implementation 'org.apache.httpcomponents:httpmime:4.5.12'
+	
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
 	
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'	
     
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
-	testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+	testImplementation 'org.mockito:mockito-core:3.3.3'
 
-	// https://mvnrepository.com/artifact/commons-cli/commons-cli
-	compile group: 'commons-cli', name: 'commons-cli', version: '1.4'    
-	
-	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
-	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.7'
-	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-stream
-	compile group: 'org.twitter4j', name: 'twitter4j-stream', version: '4.0.7'
-	// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-appengine
-	//compile group: 'org.twitter4j', name: 'twitter4j-appengine', version: '4.0.7'
-
-	// https://mvnrepository.com/artifact/org.jdom/jdom
-	compile group: 'org.jdom', name: 'jdom', version: '2.0.0'
-
-	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
-	compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.13'	
-	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
-	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'	
-	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
-	compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.12'
-	
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+	// https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito2
+	testImplementation 'org.powermock:powermock-api-mockito2:2.0.7'
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4-rule-agent
+	testImplementation 'org.powermock:powermock-module-junit4-rule-agent:2.0.7'	
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4-rule
+	testImplementation 'org.powermock:powermock-module-junit4-rule:2.0.7'
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4
+	testImplementation 'org.powermock:powermock-module-junit4:2.0.7'
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-testng
+	testImplementation 'org.powermock:powermock-module-testng:2.0.7'	
 }

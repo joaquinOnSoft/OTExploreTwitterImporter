@@ -57,6 +57,7 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 		        // build HttpEntity object and assign the file that need to be uploaded 
 		        HttpEntity entity = MultipartEntityBuilder.create().addBinaryBody("upfile", update).build();
 		        request.setEntity(entity);
+		        
 		        response = execute(request);	
 			} catch (URISyntaxException e) {
 				System.err.println(e.getMessage());

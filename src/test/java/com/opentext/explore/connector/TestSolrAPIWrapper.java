@@ -12,9 +12,14 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.junit.Assert;
 import org.junit.Test;
-
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * SEE: Mocking Apache HTTPClient using Mockito 
@@ -23,8 +28,8 @@ import org.junit.Test;
  * SEE: Mocking static methods with Mockito
  * https://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito
  */
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest(HttpClients.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(HttpClients.class)
 public class TestSolrAPIWrapper {
 	@Test
 	public void testOtcaBatchUpdate() {
@@ -43,10 +48,10 @@ public class TestSolrAPIWrapper {
 
 		CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
 
-		//PowerMockito.mockStatic(HttpClients.class);
+		PowerMockito.mockStatic(HttpClients.class);
 	
 		//and:
-		//Mockito.when(HttpClients.createDefault()).thenReturn(httpClient);
+		when(HttpClients.createDefault()).thenReturn(httpClient);
 		
 		try {
 			when(httpClient.execute(httpGet)).thenReturn(httpResponse);
