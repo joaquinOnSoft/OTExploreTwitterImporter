@@ -20,6 +20,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.opentext.explore.util.FileUtil;
+
 /**
  * SEE: Mocking Apache HTTPClient using Mockito 
  * https://stackoverflow.com/questions/20542361/mocking-apache-httpclient-using-mockito
@@ -30,11 +32,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(HttpClients.class)
 public class TestSolrAPIWrapper {
+	
+
+    
 	@Test
 	public void testOtcaBatchUpdate() {
-		File file = new File(
-				getClass().getClassLoader().getResource("1257656312529186816.xml").getFile()
-				);		
+		File file = FileUtil.getFileFromResources("1257656312529186816.xml"); 
 
 		//given:
 		ProtocolVersion protocol = new ProtocolVersion("HTTP", 1, 1);
@@ -73,6 +76,7 @@ public class TestSolrAPIWrapper {
 			fail(e.getMessage());
 		}
 
+		//SolrAPIWrapper wrapper = spy(new SolrAPIWrapper());
 		SolrAPIWrapper wrapper = new SolrAPIWrapper();
 		String response = wrapper.otcaBatchUpdate(file);
 
@@ -88,6 +92,7 @@ public class TestSolrAPIWrapper {
 				"    <lst name=\"exploredocfields\">\r\n" + 
 				"        <lst name=\"1257656312529186816\"/></lst>\r\n" +  
 				"</response>";
+		
 		//then:
 		Assert.assertNotNull(response);
 		Assert.assertEquals(expectedResponse, response);

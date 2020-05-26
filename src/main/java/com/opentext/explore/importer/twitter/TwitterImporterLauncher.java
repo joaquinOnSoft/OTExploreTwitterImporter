@@ -40,7 +40,7 @@ public class TwitterImporterLauncher {
 					file = new FileInputStream(configFilePath);
 					prop.load(file);
 					
-					TwitterImporter importer = new TwitterImporter(null);
+					TwitterImporter importer = new TwitterImporter(prop);
 					importer.start();
 				}
 			}

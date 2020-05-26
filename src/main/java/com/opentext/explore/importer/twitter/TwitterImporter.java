@@ -12,8 +12,10 @@ import twitter4j.TwitterStreamFactory;
 
 
 public class TwitterImporter {
+	private Properties prop;
+	
 	public TwitterImporter(Properties prop) {
-		// TODO read properties
+		this.prop = prop;
 	}
 
 	public void start() {
@@ -56,16 +58,19 @@ public class TwitterImporter {
 	    twitterStream.addListener(listener);
 
 	    FilterQuery filter = new FilterQuery();
-	    String keywords[] = {"Ayuntamiento de Madrid","Ayto Madrid", "@MADRID",
-	    		"@JMD_Sanblas", "@JMDArganzuela", "@JMDBarajas", "@JMDCarabanchel",
-	    		"@JMDCentro", "@JMDChamartin", "@JMDChamberi", "@JMDCiudadLineal",
-	    		"@JMDFuencarral", "@jmdhortaleza", "@JMDLatina", "@MoncloaAravaca",
-	    		"@JMDmoratalaz", "@JMDpvallecas", "@JMDretiro", "@JMDSalamanca",
-	    		"@JMD_Sanblas", "@distritotetuan", "@JMDTetuan", "@jmd_usera",
-	    		"@jmdvicalvaro", "@JMDvivallecas", "@JMD_villaverde"};
-	    filter.track(keywords);
-	    filter.language(new String[] { "es" });
+	    filter.track(stringToArrayString(prop.getProperty("keywords")));
+	    filter.language(stringToArrayString(prop.getProperty("language")));
 	    
 	    twitterStream.filter(filter);
+	}
+	
+	private String[] stringToArrayString(String value) {
+		if(value != null) {
+			return value.split(",");
+		}
+		else {
+			return new String[] {};
+		}
+		
 	}
 }
