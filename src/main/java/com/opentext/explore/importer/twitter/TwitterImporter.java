@@ -83,7 +83,7 @@ public class TwitterImporter {
 
 	    FilterQuery filter = new FilterQuery();
 	    filter.track(stringToArrayString(prop.getProperty("keywords")));
-	    filter.language(stringToArrayString(prop.getProperty("language")));
+	    filter.language(stringToArrayString(prop.getProperty("languages")));
 	    
 	    twitterStream.filter(filter);
 	}
