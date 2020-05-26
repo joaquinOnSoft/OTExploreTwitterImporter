@@ -1,12 +1,14 @@
 package com.opentext.explore.connector;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
+import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private String urlBase;
@@ -55,11 +57,14 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 		        // add request headers
 		        request.addHeader(HttpHeaders.ACCEPT_CHARSET, "UTF-8");
 		        // build HttpEntity object and assign the file that need to be uploaded 
-		        HttpEntity entity = MultipartEntityBuilder.create().addBinaryBody("upfile", update).build();
+		        
+		        HttpEntity entity = EntityBuilder.create()
+		        		.setBinary(Files.readAllBytes(update.toPath()))
+		        		.build();
 		        request.setEntity(entity);
 		        
 		        response = execute(request);	
-			} catch (URISyntaxException e) {
+			} catch (URISyntaxException | IOException e) {
 				System.err.println(e.getMessage());
 			}
 		}
