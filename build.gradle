@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 
 java {
-	version = '20.2'
+	version = '20.2' 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }
@@ -24,8 +24,6 @@ jar {
     
     //https://discuss.gradle.org/t/generate-runnable-jar-pakage-dependencies/28171
 	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
-	
-	version = '20.2'
 }
 
 

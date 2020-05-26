@@ -1,10 +1,13 @@
 package com.opentext.explore.importer.twitter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +69,26 @@ public class TestTwitterTransformer {
 				"</add>\r\n";
 		
 		assertEquals(expectedXML, xml);
+	}
+	
+	@Test 
+	public void testStatusToXMLFile() {
+		String outputXML = "test_1257656312529186816.xml";
+		
+		List<Status> statuses = new LinkedList<Status>();
+		statuses.add(status);
+		
+		try {
+			TwitterTransformer.statusToXMLFile(statuses, outputXML);
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+		
+		File xml = new File(outputXML);
+		assertTrue(xml.exists());
+		
+		//Remove test XML
+		xml.delete();
 	}
 
 }

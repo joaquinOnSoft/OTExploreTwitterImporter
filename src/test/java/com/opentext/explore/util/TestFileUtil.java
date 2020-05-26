@@ -9,6 +9,14 @@ import junit.framework.TestCase;
 
 public class TestFileUtil extends TestCase {
 	@Test
+	public void testGetFileFromResources() {
+		File f = FileUtil.getFileFromResources("1257656312529186816.xml");
+		assertNotNull(f);
+		assertTrue(f.exists());
+	}
+	
+	
+	@Test
 	public void testIsFile() {
 		String cwd = null;
 		try {
