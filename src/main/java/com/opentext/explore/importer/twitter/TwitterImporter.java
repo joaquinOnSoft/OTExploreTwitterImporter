@@ -1,6 +1,11 @@
 package com.opentext.explore.importer.twitter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
+
+import com.opentext.explore.connector.SolrAPIWrapper;
+import com.opentext.explore.util.FileUtil;
 
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
@@ -13,9 +18,13 @@ import twitter4j.TwitterStreamFactory;
 
 public class TwitterImporter {
 	private Properties prop;
+	private boolean verbose = true; 
 	
 	public TwitterImporter(Properties prop) {
 		this.prop = prop;
+		
+		String strVerbose = prop.getProperty("verbose", "true");
+		verbose = Boolean.valueOf(strVerbose);
 	}
 
 	public void start() {
@@ -33,7 +42,23 @@ public class TwitterImporter {
 
 			@Override
 			public void onStatus(Status status) {
-				System.out.println(status.getUser().getName() + " : " + status.getText());				
+				if(verbose) {
+					System.out.println(status.getUser().getName() + " : " + status.getText());					
+				}
+				
+				String xmlFileName = Long.toString(status.getId()) + ".xml";
+				try {
+					TwitterTransformer.statusToXMLFile(status, xmlFileName);
+					
+					File xml = new File(xmlFileName); 
+					SolrAPIWrapper wrapper = new SolrAPIWrapper();
+					wrapper.otcaBatchUpdate(xml);					
+				} catch (IOException e) {
+					System.err.println(e.getMessage());
+				}
+				finally {
+					FileUtil.deleteFile(xmlFileName);
+				}
 			}
 
 			@Override
@@ -53,7 +78,6 @@ public class TwitterImporter {
 			}
 	    };
 	    	   
-		// TODO read properties
 	    TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 	    twitterStream.addListener(listener);
 

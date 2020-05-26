@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jdom2.Document;
@@ -76,13 +77,20 @@ public class TwitterTransformer {
 		return doc;
 	}
 	
+	
+	public static void statusToXMLFile(Status status, String fileName) throws IOException {
+		List<Status> statuses = new LinkedList<Status>();
+		statuses.add(status);
+		statusesToXMLFile(statuses, fileName);
+	}
+	
 	/**
 	 * Generate a XML file using the given Twitter statuses 
 	 * @param statuses - List of Twitter statuses
 	 * @param fileName - File name of the XML that will be generated
 	 * @throws IOException
 	 */
-	public static void statusToXMLFile(List<Status> statuses, String fileName) throws IOException {
+	public static void statusesToXMLFile(List<Status> statuses, String fileName) throws IOException {
 		Document doc = statusToDoc(statuses);
 
 		if(doc != null) {

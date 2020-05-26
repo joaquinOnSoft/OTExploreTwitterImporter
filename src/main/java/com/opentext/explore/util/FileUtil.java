@@ -31,4 +31,16 @@ public class FileUtil {
 		
 		return isFile;
 	}
+	
+	public static boolean deleteFile(String path) {
+		boolean deleted = false;
+		
+		File f = new File(path);
+		if(f.exists()) { 
+		    deleted = f.delete();
+		}
+		
+		return deleted;
+	
+	}
 }

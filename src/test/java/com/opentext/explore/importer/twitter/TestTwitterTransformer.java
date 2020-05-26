@@ -79,7 +79,7 @@ public class TestTwitterTransformer {
 		statuses.add(status);
 		
 		try {
-			TwitterTransformer.statusToXMLFile(statuses, outputXML);
+			TwitterTransformer.statusesToXMLFile(statuses, outputXML);
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
