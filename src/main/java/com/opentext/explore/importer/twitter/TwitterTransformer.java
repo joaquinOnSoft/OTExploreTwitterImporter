@@ -3,6 +3,7 @@ package com.opentext.explore.importer.twitter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,7 +98,7 @@ public class TwitterTransformer {
 			//Create the XML
 			XMLOutputter outter=new XMLOutputter();
 			outter.setFormat(Format.getPrettyFormat());			
-			outter.output(doc, new FileWriter(new File(fileName)));
+			outter.output(doc, new FileWriter(new File(fileName), StandardCharsets.UTF_8));
 		}		
 	}
 	

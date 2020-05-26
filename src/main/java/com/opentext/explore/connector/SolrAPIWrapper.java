@@ -55,11 +55,16 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 				request = new HttpGetWithEntity();
 				request.setURI(builder.build());
 		        // add request headers
-		        request.addHeader(HttpHeaders.ACCEPT_CHARSET, "UTF-8");
+		        //request.addHeader(HttpHeaders.ACCEPT_CHARSET, "UTF-8");
+				request.addHeader(HttpHeaders.ACCEPT, "*.*");
+		        request.addHeader(HttpHeaders.CONTENT_TYPE, "application/xml");
+		        request.addHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate, br");
+		        request.addHeader(HttpHeaders.CONNECTION, "keep-alive");
 		        // build HttpEntity object and assign the file that need to be uploaded 
 		        
 		        HttpEntity entity = EntityBuilder.create()
 		        		.setBinary(Files.readAllBytes(update.toPath()))
+		        		//.setText(new String(Files.readAllBytes(update.toPath())))
 		        		.build();
 		        request.setEntity(entity);
 		        
