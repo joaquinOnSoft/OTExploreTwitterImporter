@@ -16,6 +16,8 @@ oauth.accessTokenSecret=******************************************
 
 > SEE: [Twitter4J: Generic properties](http://twitter4j.org/en/configuration.html)
 
+> NOTE: You need a [Twitter Developer](https://developer.twitter.com/en) account to get access to the Twitter Stream.
+
 ## Configuration file: twitter-importer.properties
 
 Configuration file that specifies the filter to apply to the Twitter stream
@@ -36,3 +38,17 @@ verbose=true
 host=http://localhost:8983
 ```
 
+## Command line execution 
+
+This utility is distributed as a runnable .jar file.
+
+These are the accepted parameters:
+
+usage: javac -jar OTExploreTwitterImporter-20.2.jar
+ * -c, --config						Define config file path
+
+### Example of invocation
+
+```
+$ java -jar OTExploreTwitterImporter-20.2.jar --config C:\Users\joaquin\eclipse-workspace\OTExploreTwitterImporter\src\main\resources\twitter-importer.properties
+```
