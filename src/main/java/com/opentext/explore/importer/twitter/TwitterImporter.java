@@ -52,7 +52,7 @@ public class TwitterImporter {
 					
 					File xml = new File(xmlFileName); 
 					SolrAPIWrapper wrapper = new SolrAPIWrapper();
-					wrapper.otcaBatchUpdate(xml);					
+					wrapper.otcaBatchUpdate(xml);	
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}

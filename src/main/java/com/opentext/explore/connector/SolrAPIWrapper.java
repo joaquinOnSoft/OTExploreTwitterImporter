@@ -64,7 +64,6 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 		        
 		        HttpEntity entity = EntityBuilder.create()
 		        		.setBinary(Files.readAllBytes(update.toPath()))
-		        		//.setText(new String(Files.readAllBytes(update.toPath())))
 		        		.build();
 		        request.setEntity(entity);
 		        
