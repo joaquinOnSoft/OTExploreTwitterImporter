@@ -1,5 +1,14 @@
 # OpenText Explore Twitter Importer
 
+This command-line application listen to a Twitter Stream applying the filters, defined in twitter4j.properties, to select the tweets of our interest.
+
+These tweets are inserted into the Solr Server used by **OpenText Explore**. 
+
+Once the tweets are available in **OpenText Explore** you can create your owns dashboards to analyze the information listened.
+
+
+> [OpenText™ Explore](https://www.opentext.com/products-and-solutions/products/customer-experience-management/contact-center-workforce-optimization/opentext-explore) is a business discovery solution that allows business and call center professionals to view cross-channel interactions collectively for a comprehensive picture of customer behaviors and relationships. 
+
 ## Twitter stream API
 
 There are a number of properties available for configuring Twitter4J (required to listen the Twitter stream). You can specify properties via **twitter4j.properties** file as follows : 
@@ -44,11 +53,11 @@ This utility is distributed as a runnable .jar file.
 
 These are the accepted parameters:
 
-usage: javac -jar OTExploreTwitterImporter-20.2.jar
+usage: java -jar OTExploreTwitterImporter-20.2.jar
  * -c, --config						Define config file path
 
 ### Example of invocation
 
 ```
-$ java -jar OTExploreTwitterImporter-20.2.jar --config C:\Users\joaquin\eclipse-workspace\OTExploreTwitterImporter\src\main\resources\twitter-importer.properties
+$ java -jar OTExploreTwitterImporter-20.2.jar --config C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties
 ```
