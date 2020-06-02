@@ -12,10 +12,15 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.opentext.explore.util.FileUtil;
 
 public class TwitterImporterLauncher {
+
+	protected static final Log log = LogFactory.getLog(TwitterImporterLauncher.class);
+		
 	public static void main(String[] args) {
 		Properties prop = new Properties();
 		InputStream file = null;
@@ -47,10 +52,12 @@ public class TwitterImporterLauncher {
 
 		}
 		catch (IOException e) {
+			log.error(e.getMessage());
 			System.err.println(e.getMessage());
 		}
 		catch (ParseException e) {
-			System.err.println(e.getMessage());
+			log.error(e.getMessage());			
+			
 			formatter.printHelp("java -jar file.jar --config/-c 'config file path'", options);
 
 			System.exit(-1);	
@@ -61,12 +68,11 @@ public class TwitterImporterLauncher {
 					file.close();
 				} 
 				catch (IOException e2) {
+					log.error(e2.getMessage());
 					System.err.println(e2.getMessage());
 					System.exit(-1);
 				}
 			}
 		}
-
 	}
-
 }

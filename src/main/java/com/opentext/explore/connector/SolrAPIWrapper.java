@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.entity.EntityBuilder;
@@ -13,10 +15,12 @@ import org.apache.http.client.utils.URIBuilder;
 public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private String urlBase;
 	
-	private static final String METHOD_OTCA_BATCH_UPDATE = "otcaBatchUpdate";
+	protected static final Log log = LogFactory.getLog(SolrAPIWrapper.class);
+
+	private static final String METHOD_OTCA_BATCH_UPDATE = "/solr/interaction/otcaBatchUpdate";
 
 	public SolrAPIWrapper() {
-		this.urlBase = "http://localhost:8983/solr/interaction/";
+		this.urlBase = "http://localhost:8983";
 	}
 	
 	
@@ -40,7 +44,7 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 		try {
 			builder = new URIBuilder(urlBase + METHOD_OTCA_BATCH_UPDATE);
 		} catch (URISyntaxException e) {
-			System.err.println(e.getMessage());
+			log.error(e.getMessage());
 		}
 		
 		if(builder != null) {
@@ -69,7 +73,7 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 		        
 		        response = execute(request);	
 			} catch (URISyntaxException | IOException e) {
-				System.err.println(e.getMessage());
+				log.error(e.getMessage());
 			}
 		}
 		

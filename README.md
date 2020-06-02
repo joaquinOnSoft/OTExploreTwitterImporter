@@ -61,3 +61,9 @@ usage: java -jar OTExploreTwitterImporter-20.2.jar
 ```
 $ java -jar OTExploreTwitterImporter-20.2.jar --config C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties
 ```
+
+## TO DO
+ - Process "host" parameter from twitter-importer.properties [DONE]
+ - Remove System.out.println sentences [DONE]
+ - Generate log file [DONE]
+ - Include followers to the twitter-importer.properties and manage it [IN PROGRESS]

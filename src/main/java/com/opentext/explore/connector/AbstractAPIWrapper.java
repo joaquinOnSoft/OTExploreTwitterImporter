@@ -39,21 +39,21 @@ public abstract class AbstractAPIWrapper {
 			response = httpClient.execute(request);
 
 			// Get HttpResponse Status
-			System.out.println(response.getProtocolVersion());              // HTTP/1.1
-			System.out.println(response.getStatusLine().getStatusCode());   // 200
-			System.out.println(response.getStatusLine().getReasonPhrase()); // OK
-			System.out.println(response.getStatusLine().toString());        // HTTP/1.1 200 OK
+			log.debug(response.getProtocolVersion());              // HTTP/1.1
+			log.debug(response.getStatusLine().getStatusCode());   // 200
+			log.debug(response.getStatusLine().getReasonPhrase()); // OK
+			log.debug(response.getStatusLine().toString());        // HTTP/1.1 200 OK
 
 			HttpEntity entity = response.getEntity();
 			if (entity != null) {
 				// return it as a String
 				result = EntityUtils.toString(entity);
-				System.out.println(result);
+				log.info(result);
 			}
 
 		} 
 		catch (IOException e) {
-			System.err.println(e.toString());
+			log.error(e.toString());
 		}
 		finally {
 			try {
@@ -63,7 +63,7 @@ public abstract class AbstractAPIWrapper {
 				httpClient.close();
 			}
 			catch(IOException e) {
-				System.err.println(e.toString());				
+				log.error(e.toString());				
 			}
 		}
 
@@ -85,7 +85,7 @@ public abstract class AbstractAPIWrapper {
 			try {
 				obj = mapper.readValue(json.toString(), toClass);
 			} catch (IOException e) {
-				log.warn("API response (JSON Str to Object): " + e, e);
+				log.warn("API response (JSON Str to Object): " + e.getMessage(), e);
 				return null;
 			}
 			return obj;

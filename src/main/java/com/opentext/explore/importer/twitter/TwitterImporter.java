@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.opentext.explore.connector.SolrAPIWrapper;
 import com.opentext.explore.util.FileUtil;
 
@@ -19,6 +22,8 @@ import twitter4j.TwitterStreamFactory;
 public class TwitterImporter {
 	private Properties prop;
 	private boolean verbose = true; 
+	
+	final static Log log  = LogFactory.getLog(TwitterImporter.class);
 	
 	public TwitterImporter(Properties prop) {
 		this.prop = prop;
@@ -51,10 +56,17 @@ public class TwitterImporter {
 					TwitterTransformer.statusToXMLFile(status, xmlFileName);
 					
 					File xml = new File(xmlFileName); 
-					SolrAPIWrapper wrapper = new SolrAPIWrapper();
+					
+					String host = prop.getProperty("host");
+					SolrAPIWrapper wrapper = null;
+					if(host == null)
+						wrapper = new SolrAPIWrapper();
+					else {
+						wrapper = new SolrAPIWrapper(host);
+					}
 					wrapper.otcaBatchUpdate(xml);	
 				} catch (IOException e) {
-					System.err.println(e.getMessage());
+					log.error(e.getMessage());
 				}
 				finally {
 					FileUtil.deleteFile(xmlFileName);
