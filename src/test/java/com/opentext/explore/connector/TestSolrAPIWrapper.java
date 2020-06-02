@@ -35,7 +35,7 @@ public class TestSolrAPIWrapper {
 	
 
     
-	@Test
+	//@Test
 	public void testOtcaBatchUpdate() {
 		File file = FileUtil.getFileFromResources("1257656312529186816.xml"); 
 

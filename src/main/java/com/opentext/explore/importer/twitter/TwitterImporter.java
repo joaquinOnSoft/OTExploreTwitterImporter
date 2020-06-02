@@ -102,6 +102,11 @@ public class TwitterImporter {
 	    filter.track(stringToArrayString(prop.getProperty("keywords")));
 	    filter.language(stringToArrayString(prop.getProperty("languages")));
 	    
+	    String[] followStr = stringToArrayString(prop.getProperty("follow"));
+	    if(followStr != null && followStr.length > 0) {
+	    	filter.follow(getUserIdByScreenName(followStr));
+	    }
+	    
 	    twitterStream.filter(filter);
 	}
 	

@@ -35,6 +35,7 @@ It supports theses properties:
 
  - languages - Specifies the tweets language of the stream (You can specify more than one separated by commas)
  - keywords - Specifies keywords to track (You can specify more than one separated by commas). 
+ - follow - Twitter account names separated by commas (Don't include the @), e.g. madrid to follow @madrid
  - verbose - Verbose mode. Possible values: true (messages are shown in the console) or false (messages are NOT shown in the console)
  - host - Solr server URL. Default value: http://localhost:8983
 
@@ -45,6 +46,7 @@ languages=es
 keywords=Ayuntamiento de Madrid,Ayto Madrid,@MADRID
 verbose=true
 host=http://localhost:8983
+follow=madrid,lineaMadrid
 ```
 
 ## Command line execution 
@@ -61,9 +63,3 @@ usage: java -jar OTExploreTwitterImporter-20.2.jar
 ```
 $ java -jar OTExploreTwitterImporter-20.2.jar --config C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties
 ```
-
-## TO DO
- - Process "host" parameter from twitter-importer.properties [DONE]
- - Remove System.out.println sentences [DONE]
- - Generate log file [DONE]
- - Include followers to the twitter-importer.properties and manage it [IN PROGRESS]
