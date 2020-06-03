@@ -19,7 +19,7 @@ jar {
     }
  
     from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     
     //https://discuss.gradle.org/t/generate-runnable-jar-pakage-dependencies/28171
