@@ -78,28 +78,45 @@ public class TwitterTransformer {
 		return doc;
 	}
 	
-	
-	public static void statusToXMLFile(Status status, String fileName) throws IOException {
+	/**
+	 * Generate a XML file using the given Twitter status 
+	 * @param status - Twitter status
+	 * @param fileName - File name of the XML that will be generated
+	 * @return path of the XML file created
+	 * @throws IOException
+	 */	
+	public static String statusToXMLFile(Status status, String fileName) throws IOException {
 		List<Status> statuses = new LinkedList<Status>();
 		statuses.add(status);
-		statusesToXMLFile(statuses, fileName);
+		return statusesToXMLFile(statuses, fileName);
 	}
 	
 	/**
 	 * Generate a XML file using the given Twitter statuses 
 	 * @param statuses - List of Twitter statuses
 	 * @param fileName - File name of the XML that will be generated
+	 * @return Absolute path of the XML file created
 	 * @throws IOException
 	 */
-	public static void statusesToXMLFile(List<Status> statuses, String fileName) throws IOException {
+	public static String statusesToXMLFile(List<Status> statuses, String fileName) throws IOException {
+		String xmlPath = null;
 		Document doc = statusToDoc(statuses);
 
 		if(doc != null) {
 			//Create the XML
 			XMLOutputter outter=new XMLOutputter();
-			outter.setFormat(Format.getPrettyFormat());			
-			outter.output(doc, new FileWriter(new File(fileName), StandardCharsets.UTF_8));
+			outter.setFormat(Format.getPrettyFormat());
+			
+			File xmlFile = new File(fileName);
+			xmlPath = xmlFile.getAbsolutePath();
+			FileWriter fWriter = new FileWriter(xmlFile, StandardCharsets.UTF_8);
+			
+			outter.output(doc, fWriter);
+			
+			fWriter.close();
 		}		
+		
+		return xmlPath;		
 	}
 	
 	/**

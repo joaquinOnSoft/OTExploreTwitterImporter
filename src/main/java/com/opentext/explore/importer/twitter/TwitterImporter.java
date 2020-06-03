@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.opentext.explore.connector.SolrAPIWrapper;
 import com.opentext.explore.util.FileUtil;
@@ -28,7 +28,7 @@ public class TwitterImporter {
 	private Properties prop;
 	private boolean verbose = true; 
 	
-	final static Log log  = LogFactory.getLog(TwitterImporter.class);
+	protected static final Logger log = LogManager.getLogger(TwitterImporter.class);
 	
 	public TwitterImporter(Properties prop) {
 		this.prop = prop;
@@ -56,11 +56,10 @@ public class TwitterImporter {
 					System.out.println(status.getUser().getName() + " : " + status.getText());					
 				}
 				
+				String xmlPath = null;
 				String xmlFileName = Long.toString(status.getId()) + ".xml";
 				try {
-					TwitterTransformer.statusToXMLFile(status, xmlFileName);
-					
-					File xml = new File(xmlFileName); 
+					xmlPath = TwitterTransformer.statusToXMLFile(status, xmlFileName);
 					
 					String host = prop.getProperty("host");
 					SolrAPIWrapper wrapper = null;
@@ -69,12 +68,15 @@ public class TwitterImporter {
 					else {
 						wrapper = new SolrAPIWrapper(host);
 					}
-					wrapper.otcaBatchUpdate(xml);	
+					wrapper.otcaBatchUpdate(new File(xmlPath));	
 				} catch (IOException e) {
 					log.error(e.getMessage());
 				}
 				finally {
-					FileUtil.deleteFile(xmlFileName);
+					if(xmlPath != null) {
+						FileUtil.deleteFile(xmlPath);	
+					}
+					
 				}
 			}
 

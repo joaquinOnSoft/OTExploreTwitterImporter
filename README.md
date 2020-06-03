@@ -61,5 +61,5 @@ usage: java -jar OTExploreTwitterImporter-20.2.jar
 ### Example of invocation
 
 ```
-$ java -jar OTExploreTwitterImporter-20.2.jar --config C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties
+$ java -jar OTExploreTwitterImporter-20.2.jar --config "C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties"
 ```

@@ -12,16 +12,17 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.opentext.explore.util.FileUtil;
 
 public class TwitterImporterLauncher {
-
-	protected static final Log log = LogFactory.getLog(TwitterImporterLauncher.class);
+	
+	protected static final Logger log = LogManager.getLogger(TwitterImporterLauncher.class);
 		
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		Properties prop = new Properties();
 		InputStream file = null;
 

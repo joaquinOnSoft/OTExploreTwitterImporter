@@ -5,17 +5,17 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private String urlBase;
 	
-	protected static final Log log = LogFactory.getLog(SolrAPIWrapper.class);
+	protected static final Logger log = LogManager.getLogger(SolrAPIWrapper.class);
 
 	private static final String METHOD_OTCA_BATCH_UPDATE = "/solr/interaction/otcaBatchUpdate";
 
