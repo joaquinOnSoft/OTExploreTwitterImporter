@@ -1,6 +1,6 @@
 # OpenText Explore Twitter Importer
 
-This command-line application listen to a Twitter Stream applying the filters, defined in twitter4j.properties, to select the tweets of our interest.
+This command-line application listens to a Twitter Stream applying the filters, defined in twitter4j.properties, to select the tweets of our interest.
 
 These tweets are inserted into the Solr Server used by **OpenText Explore**. 
 
