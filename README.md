@@ -259,6 +259,9 @@ http://localhost:8983/solr/admin/collections?action=RELOAD&name=interaction&wt=x
 ```
 c:> iisreset
 ```
+Once the configuration has been updated Explore will look like this:
+
+![alt text](img/explore-doc-types-and-extra-fields-in-group.png "Explore Doc types and extra fields in group")
 
 
 # Utilities
