@@ -57,7 +57,7 @@ This utility is distributed as a runnable .jar file.
 
 These are the accepted parameters:
 
-usage: java -jar OTExploreTwitterImporter-20.2.jar
+usage: java -jar OTExploreTwitterImporter-20.2.06.jar
  * -c, --config						Define config file path
 
 ### Example of invocation
