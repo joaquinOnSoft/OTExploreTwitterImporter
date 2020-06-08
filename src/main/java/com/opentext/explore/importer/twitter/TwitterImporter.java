@@ -74,7 +74,7 @@ public class TwitterImporter {
 				}
 				finally {
 					if(xmlPath != null) {
-						FileUtil.deleteFile(xmlPath);	
+						//FileUtil.deleteFile(xmlPath);	
 					}
 					
 				}

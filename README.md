@@ -63,3 +63,155 @@ usage: java -jar OTExploreTwitterImporter-20.2.jar
 ```
 $ java -jar OTExploreTwitterImporter-20.2.jar --config "C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties"
 ```
+
+# Explore configuration
+
+## Explore.Configuration.xml
+
+The configuration file **Explore.Configuration.xml** is located at **<EXPLORE_HOME>\Explore.Configuration.xml**, e.g. 
+
+```
+D:\Program Files (x86)\OpenText\Explore\Explore.Configuration.xml 
+```
+
+### Twitter DocType
+
+We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.xml in order to identify Twitter as a new input/document type analyzed by Explore:
+
+```xml
+  <DocTypes>
+    ...  
+    <DocType>
+      <Name>Twitter</Name>
+      <GridFields>
+        <Field column="Source">
+          <Name>Followers</Name>
+          <Tag>followers</Tag>
+        </Field>
+        <Field column="Source">
+          <Name>Following</Name>
+          <Tag>following</Tag>
+        </Field>
+      </GridFields>
+    </DocType>	
+  </DocTypes>
+```
+
+![alt text](img/explore-doc-types.png "Twitter doc type")
+
+
+### Group Twitter
+
+
+We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore.Configuration.xml in order to identify Twitter as a new group that can be used to filter by:
+
+```xml
+  <!--<CriteriaItem parametric="true" advancedSearch="true" trendWidget="true" autoPopulate="true" reloadUserData="true" groupBy="single" numberBuckets="6">
+    parametric:     Show criteria item in the filter section on the search tab. Default value: false
+    advancedSearch: Show criteria in the advanced search dialog. . Default value: true
+    trendWidget:    Display criteria in the trend widget settings dialog. Only to be used with numeric criterias. Default value: false
+    reloadUserData: Allows to reload user values for a parametric criteria. EG MAS Source. Default value: false
+    groupBy:        Allows to group values in 3 ways: "single", "numeric" or "alphabetical"
+    numberBuckets:  Number of buckets when gruping using numeric or alphabetical. Default value: 5
+    numericStats:   Numeric criteria to be used in the Statistical Summary or in the High and Low Comparison widget.    
+    -->
+
+  <CriteriaItems>
+  
+    ...
+      
+    <Group name="Twitter">	             
+      <CriteriaItem parametric="true" groupBy ="numeric" numberBuckets="10" advancedSearch="true" numericStats="true">
+        <Name>Following</Name>
+        <Tag>following</Tag>
+        <ComparatorGroup>match</ComparatorGroup>
+        <AssociatedDocTypes>
+          <DocType>Twitter</DocType>
+        </AssociatedDocTypes>
+      </CriteriaItem>
+
+      <CriteriaItem parametric="true" groupBy ="numeric" numberBuckets="10" advancedSearch="true" numericStats="true">
+        <Name>Followers</Name>
+        <Tag>followers</Tag>
+        <ComparatorGroup>match</ComparatorGroup>
+        <AssociatedDocTypes>
+          <DocType>Twitter</DocType>
+        </AssociatedDocTypes>		
+      </CriteriaItem>
+    </Group>  
+  </CriteriaItems>    
+```
+![alt text](img/explore-groups.png "Twitter groups")
+
+## schema.xml (Solr)
+
+The Solr configuration file **schema.xml** is located at **<SOLR_HOME>\solr-7.3.1\server\solr\configsets\interaction_config** e.g. 
+
+```
+D:\SolrCloud\solr-7.3.1\server\solr\configsets\interaction_config
+```
+
+### New Twitter fields on Solr
+
+We must define new fields to be able to import extra metadata related with each Twitt 
+
+```xml
+
+  <!-- ADD YOUR CUSTOM FIELDS HERE -->
+
+  <field name="followers" type="pint" indexed="true" 	stored="false" 	docValues="true" />
+  <field name="followers_search" type="explore_filter_text" 	indexed="true" 	stored="false" multiValued="true" />
+  <copyField source="followers" dest="followers_search" />
+
+  <field name="following" type="pint" indexed="true" stored="false" docValues="true" />
+  <field name="following_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="following" dest="following_search" />
+
+  <!-- END CUSTOM FIELDS -->
+```
+
+> **NOTE:** Field must be named using lowercase
+
+
+## Applying changes on your instance
+
+Once you have modified **Explore.Configuration.xml** and **schema.xml** files you must follow these steps:
+
+ - Execute this command from a terminal/console as administrator:
+
+```
+d:> cd d:\SolrCloud\solr-7.3.1\bin>
+
+d:\SolrCloud\solr-7.3.1\bin> solr.cmd zk -z 127.0.0.1 upconfig -d d:\SolrCloud\solr-7.3.1\server\solr\configsets\interaction_config -n interaction_config 
+```
+
+- Open a browser and access to this URL: 
+
+```
+http://localhost:8983/solr/admin/collections?action=RELOAD&name=interaction&wt=xml
+```
+
+![alt text](img/solr-config-reload.png  "Solr configuration reload")
+		
+- Reset IIS from a terminal/console as administrator:
+
+```
+c:> iisreset
+```
+
+
+# Utilities
+
+## Removing all the imported Twitts 
+
+During your test you can decide to remove all the Twitts imported. The fastest way to do it is just executing this command from a terminal/console as administrator:
+
+```
+d:> cd d:\SolrCloud\solr-7.3.1\example\exampledocs
+
+d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -Dcommit=true -jar post.jar "<delete><query>*:*</query></delete>"
+```
+
+> NOTE: The path of your Solr installation can vary in your environment.
+
+

@@ -59,16 +59,18 @@ public class TwitterTransformer {
 							
 				eDoc.addContent(createElementField("reference_id", status.getId()));
 				eDoc.addContent(createElementField("interaction_id", status.getId()));
-				eDoc.addContent(createElementField("title", "TweetID: " + status.getId()));
+				eDoc.addContent(createElementField("title", status.getText()));
 				eDoc.addContent(createElementField("author_name", status.getUser().getName()));
 				eDoc.addContent(createElementField("ID", status.getId()));
-				eDoc.addContent(createElementField("type", "Micro Media"));	
+				eDoc.addContent(createElementField("type", "Twitter"));	
 				eDoc.addContent(createElementField("published_date", status.getCreatedAt()));
 				eDoc.addContent(createElementField("date_time", status.getCreatedAt()));
 				eDoc.addContent(createElementField("content", status.getText()));				
 				eDoc.addContent(createElementField(status.getLang() + "_content", status.getText()));				
 				eDoc.addContent(createElementField("profile_img", status.getUser().getBiggerProfileImageURLHttps()));				
-			
+				eDoc.addContent(createElementField("followers", (long) status.getUser().getFollowersCount()));				
+				eDoc.addContent(createElementField("following", (long) status.getUser().getFriendsCount()));				
+
 				root.addContent(eDoc);
 			}
 			
