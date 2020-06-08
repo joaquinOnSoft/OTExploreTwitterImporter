@@ -68,9 +68,13 @@ public class TwitterTransformer {
 				eDoc.addContent(createElementField("content", status.getText()));				
 				eDoc.addContent(createElementField(status.getLang() + "_content", status.getText()));				
 				eDoc.addContent(createElementField("profile_img", status.getUser().getBiggerProfileImageURLHttps()));				
-				eDoc.addContent(createElementField("followers", (long) status.getUser().getFollowersCount()));				
-				eDoc.addContent(createElementField("following", (long) status.getUser().getFriendsCount()));				
-
+				eDoc.addContent(createElementField("followers", status.getUser().getFollowersCount()));				
+				eDoc.addContent(createElementField("following", status.getUser().getFriendsCount()));
+				eDoc.addContent(createElementField("favorite_count", status.getFavoriteCount()));	
+				eDoc.addContent(createElementField("retweet_count", status.getRetweetCount()));
+				eDoc.addContent(createElementField("latitude", status.getGeoLocation().getLatitude()));
+				eDoc.addContent(createElementField("longitude", status.getGeoLocation().getLongitude()));
+				
 				root.addContent(eDoc);
 			}
 			
@@ -145,11 +149,19 @@ public class TwitterTransformer {
 	private static Element createElementField(String name, Date content) {
 		return createElementField(name, DateUtil.dateToUTC(content));
 	}
-		
+
 	private static Element createElementField(String name, long content) {
 		return createElementField(name, Long.toString(content));
 	}
+	
+	private static Element createElementField(String name, int content) {
+		return createElementField(name, Integer.toString(content));
+	}
 
+	private static Element createElementField(String name, double content) {
+		return createElementField(name, Double.toString(content));
+	}	
+	
 	private static Element createElementField(String name, String content) {
 		Element elementField = new Element("field");
 		elementField.setAttribute("name", name);
