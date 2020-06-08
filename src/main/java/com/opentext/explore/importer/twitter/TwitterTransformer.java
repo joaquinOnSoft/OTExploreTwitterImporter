@@ -45,7 +45,7 @@ import twitter4j.Status;
  */
 public class TwitterTransformer {
 
-	private static Document statusToDoc(List<Status> statuses) {
+	private static Document statusToDoc(List<Status> statuses, String tag) {
 		Document doc = null;
 		
 		if(statuses != null && statuses.size() > 0) {
@@ -74,7 +74,8 @@ public class TwitterTransformer {
 				eDoc.addContent(createElementField("retweet_count", status.getRetweetCount()));
 				eDoc.addContent(createElementField("latitude", status.getGeoLocation().getLatitude()));
 				eDoc.addContent(createElementField("longitude", status.getGeoLocation().getLongitude()));
-				
+				eDoc.addContent(createElementField("tag", tag));
+
 				root.addContent(eDoc);
 			}
 			
@@ -91,22 +92,23 @@ public class TwitterTransformer {
 	 * @return path of the XML file created
 	 * @throws IOException
 	 */	
-	public static String statusToXMLFile(Status status, String fileName) throws IOException {
+	public static String statusToXMLFile(Status status, String fileName, String tag) throws IOException {
 		List<Status> statuses = new LinkedList<Status>();
 		statuses.add(status);
-		return statusesToXMLFile(statuses, fileName);
+		return statusesToXMLFile(statuses, fileName, tag);
 	}
 	
 	/**
 	 * Generate a XML file using the given Twitter statuses 
 	 * @param statuses - List of Twitter statuses
 	 * @param fileName - File name of the XML that will be generated
+	 * @param tag - Tag to be added to the Twett
 	 * @return Absolute path of the XML file created
 	 * @throws IOException
 	 */
-	public static String statusesToXMLFile(List<Status> statuses, String fileName) throws IOException {
+	public static String statusesToXMLFile(List<Status> statuses, String fileName, String tag) throws IOException {
 		String xmlPath = null;
-		Document doc = statusToDoc(statuses);
+		Document doc = statusToDoc(statuses, tag);
 
 		if(doc != null) {
 			//Create the XML
@@ -132,9 +134,9 @@ public class TwitterTransformer {
 	 * @param statuses
 	 * @return
 	 */
-	public static String statusToString(List<Status> statuses) {
+	public static String statusToString(List<Status> statuses, String tag) {
 		String xml = null;
-		Document doc = statusToDoc(statuses);
+		Document doc = statusToDoc(statuses, tag);
 
 		if(doc != null) {
 			//Create the XML

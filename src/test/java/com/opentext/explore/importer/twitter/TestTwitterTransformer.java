@@ -45,6 +45,7 @@ public class TestTwitterTransformer {
 			"    <field name=\"retweet_count\">0</field>\r\n" +
 			"    <field name=\"latitude\">40.41674</field>\r\n" +
 			"    <field name=\"longitude\">-3.70303</field>\r\n" +
+			"    <field name=\"tag\">Twitter Importer</field>\r\n" +
 			"  </doc>\r\n"; 
 	
 	@Before
@@ -58,6 +59,7 @@ public class TestTwitterTransformer {
 		} catch (ParseException e) {
 			fail(e.getMessage());
 		}
+		
 		user = mock(User.class);
 		when(status.getUser()).thenReturn(user);
 		when(user.getName()).thenReturn("Haig Kartounian");
@@ -73,7 +75,7 @@ public class TestTwitterTransformer {
 		List<Status> statuses = new LinkedList<Status>();
 		statuses.add(status);
 		
-		String xml = TwitterTransformer.statusToString(statuses);
+		String xml = TwitterTransformer.statusToString(statuses, "Twitter Importer");
 		
 		String expectedXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
 				"<add>\r\n" +
@@ -91,7 +93,7 @@ public class TestTwitterTransformer {
 		statuses.add(status);
 		
 		try {
-			TwitterTransformer.statusesToXMLFile(statuses, outputXML);
+			TwitterTransformer.statusesToXMLFile(statuses, outputXML, "Twitter Importer");
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}

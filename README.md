@@ -36,6 +36,7 @@ It supports theses properties:
  - languages - Specifies the tweets language of the stream (You can specify more than one separated by commas)
  - keywords - Specifies keywords to track (You can specify more than one separated by commas). 
  - follow - Twitter account names separated by commas (Don't include the @), e.g. madrid to follow @madrid
+ - tag - Text to be used as tag to be added automatically to each twitt. Default value: "Twitter Importer"
  - verbose - Verbose mode. Possible values: true (messages are shown in the console) or false (messages are NOT shown in the console)
  - host - Solr server URL. Default value: http://localhost:8983
 
@@ -47,6 +48,7 @@ keywords=Ayuntamiento de Madrid,Ayto Madrid,@MADRID
 verbose=true
 host=http://localhost:8983
 follow=madrid,lineaMadrid
+tag=Twitter Importer
 ```
 
 ## Command line execution 

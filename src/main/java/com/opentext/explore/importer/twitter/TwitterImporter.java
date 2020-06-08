@@ -59,7 +59,9 @@ public class TwitterImporter {
 				String xmlPath = null;
 				String xmlFileName = Long.toString(status.getId()) + ".xml";
 				try {
-					xmlPath = TwitterTransformer.statusToXMLFile(status, xmlFileName);
+					String tag = prop.getProperty("tag", "Twitter Importer");
+					
+					xmlPath = TwitterTransformer.statusToXMLFile(status, xmlFileName, tag);
 					
 					String host = prop.getProperty("host");
 					SolrAPIWrapper wrapper = null;
