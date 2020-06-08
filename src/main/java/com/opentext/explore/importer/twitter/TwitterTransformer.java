@@ -72,8 +72,14 @@ public class TwitterTransformer {
 				eDoc.addContent(createElementField("following", status.getUser().getFriendsCount()));
 				eDoc.addContent(createElementField("favorite_count", status.getFavoriteCount()));	
 				eDoc.addContent(createElementField("retweet_count", status.getRetweetCount()));
-				eDoc.addContent(createElementField("latitude", status.getGeoLocation().getLatitude()));
-				eDoc.addContent(createElementField("longitude", status.getGeoLocation().getLongitude()));
+				if(status.getGeoLocation() == null) {
+					eDoc.addContent(createElementField("latitude", 0));
+					eDoc.addContent(createElementField("longitude", 0));					
+				}
+				else {
+					eDoc.addContent(createElementField("latitude", status.getGeoLocation().getLatitude()));
+					eDoc.addContent(createElementField("longitude", status.getGeoLocation().getLongitude()));
+				}				
 				eDoc.addContent(createElementField("tag", tag));
 
 				root.addContent(eDoc);

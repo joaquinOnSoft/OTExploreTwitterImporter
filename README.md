@@ -83,7 +83,6 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
 ```xml
   <DocTypes>
     ...  
-    <DocType>
       <Name>Twitter</Name>
       <GridFields>
         <Field column="Source">
@@ -94,8 +93,26 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
           <Name>Following</Name>
           <Tag>following</Tag>
         </Field>
-      </GridFields>
-    </DocType>	
+        <Field column="Source">
+          <Name>Favorite count</Name>
+          <Tag>favorite_count</Tag>
+        </Field>
+        <Field column="Source">
+          <Name>Retweet count</Name>
+          <Tag>retweet_count</Tag>
+        </Field>
+        <Field column="Source">
+          <Name>Latitude</Name>
+          <Tag>latitude</Tag>
+        </Field>
+        <Field column="Source">
+          <Name>Longitude</Name>
+          <Tag>longitude</Tag>
+        </Field>
+        <Field column="Source">
+          <Name>Tag</Name>
+          <Tag>tag</Tag>
+        </Field>
   </DocTypes>
 ```
 
@@ -140,7 +157,28 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
           <DocType>Twitter</DocType>
         </AssociatedDocTypes>		
       </CriteriaItem>
+	  
+      <CriteriaItem parametric="true" groupBy ="numeric" numberBuckets="10" advancedSearch="true" numericStats="true">
+        <Name>Favorite count</Name>
+        <Tag>favorite_count</Tag>
+        <ComparatorGroup>numeric</ComparatorGroup>
+        <AssociatedDocTypes>
+          <DocType>Twitter</DocType>
+        </AssociatedDocTypes>		
+      </CriteriaItem>
+	  
+      <CriteriaItem parametric="true" groupBy ="numeric" numberBuckets="10" advancedSearch="true" numericStats="true">
+        <Name>Retweet count</Name>
+        <Tag>retweet_count</Tag>
+        <ComparatorGroup>numeric</ComparatorGroup>
+        <AssociatedDocTypes>
+          <DocType>Twitter</DocType>
+        </AssociatedDocTypes>		
+      </CriteriaItem>	  
     </Group>  
+  
+    ...
+  
   </CriteriaItems>    
 ```
 ![alt text](img/explore-groups.png "Twitter groups")
@@ -161,13 +199,34 @@ We must define new fields to be able to import extra metadata related with each 
 
   <!-- ADD YOUR CUSTOM FIELDS HERE -->
 
-  <field name="followers" type="pint" indexed="true" 	stored="false" 	docValues="true" />
-  <field name="followers_search" type="explore_filter_text" 	indexed="true" 	stored="false" multiValued="true" />
+  <field name="followers" type="pint" indexed="true" stored="false" docValues="true" />
+  <field name="followers_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
   <copyField source="followers" dest="followers_search" />
 
   <field name="following" type="pint" indexed="true" stored="false" docValues="true" />
   <field name="following_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
   <copyField source="following" dest="following_search" />
+
+  <field name="favorite_count" type="pint" indexed="true" stored="false" docValues="true" />
+  <field name="favorite_count_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="favorite_count" dest="favorite_count_search" />
+
+  <field name="retweet_count" type="pint" indexed="true" stored="false" docValues="true" />
+  <field name="retweet_count_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="retweet_count" dest="retweet_count_search" />
+    
+  <field name="latitude" type="pfloat" indexed="true" stored="false" docValues="true" />
+  <field name="latitude_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="latitude" dest="latitude_search" />
+
+  <field name="longitude" type="pfloat" indexed="true" stored="false" docValues="true" />
+  <field name="longitude_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="longitude" dest="longitude_search" />
+    
+  <field name="tag" type="string" indexed="true" stored="false" docValues="true" />
+  <field name="tag_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="tag" dest="tag_search" />
+
 
   <!-- END CUSTOM FIELDS -->
 ```
