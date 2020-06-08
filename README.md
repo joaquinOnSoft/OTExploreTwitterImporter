@@ -124,7 +124,7 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
       <CriteriaItem parametric="true" groupBy ="numeric" numberBuckets="10" advancedSearch="true" numericStats="true">
         <Name>Following</Name>
         <Tag>following</Tag>
-        <ComparatorGroup>match</ComparatorGroup>
+        <ComparatorGroup>numeric</ComparatorGroup>
         <AssociatedDocTypes>
           <DocType>Twitter</DocType>
         </AssociatedDocTypes>
@@ -133,7 +133,7 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
       <CriteriaItem parametric="true" groupBy ="numeric" numberBuckets="10" advancedSearch="true" numericStats="true">
         <Name>Followers</Name>
         <Tag>followers</Tag>
-        <ComparatorGroup>match</ComparatorGroup>
+        <ComparatorGroup>numeric</ComparatorGroup>
         <AssociatedDocTypes>
           <DocType>Twitter</DocType>
         </AssociatedDocTypes>		
