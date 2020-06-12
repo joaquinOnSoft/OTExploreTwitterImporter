@@ -243,7 +243,7 @@ Once you have modified **Explore.Configuration.xml** and **schema.xml** files yo
  - Execute this command from a terminal/console as administrator:
 
 ```
-d:> cd d:\SolrCloud\solr-7.3.1\bin>
+d:> cd d:\SolrCloud\solr-7.3.1\bin
 
 d:\SolrCloud\solr-7.3.1\bin> solr.cmd zk -z 127.0.0.1 upconfig -d d:\SolrCloud\solr-7.3.1\server\solr\configsets\interaction_config -n interaction_config 
 ```
@@ -265,6 +265,26 @@ Once the configuration has been updated Explore will look like this:
 
 ![alt text](img/explore-doc-types-and-extra-fields-in-group.png "Explore Doc types and extra fields in group")
 
+## Create a new Project in Explore
+
+ - Open your Explore instance.
+ - Click on **Administer** in the top menu.
+ - Click on **Projects**
+ - Click on **New** (+ icon)
+ - Set the **Project name**: Madrid
+ 
+ ![alt text](img/explore-new-project.png "Explore New Project")
+ 
+ - Click on **Search Criteria**
+ - Provide the required fields:
+    - Search expression: *
+    - Types:  Twitter
+    - Include results that have "all" of the followings:
+       - Imported tag: is Ayto. Madrid 
+ 
+ ![alt text](img/explore-project-filter.png "Explore Select criteria on Project")
+ 
+> NOTE: the value used on the "Imported tag" is the same value that you have used in the **itag** property on the configuration file (twitter-importer.properties).
 
 # Utilities
 
