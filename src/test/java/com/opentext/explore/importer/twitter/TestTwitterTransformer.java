@@ -45,7 +45,7 @@ public class TestTwitterTransformer {
 			"    <field name=\"retweet_count\">0</field>\r\n" +
 			"    <field name=\"latitude\">40.41674</field>\r\n" +
 			"    <field name=\"longitude\">-3.70303</field>\r\n" +
-			"    <field name=\"tag\">Twitter Importer</field>\r\n" +
+			"    <field name=\"itag\">Twitter Importer</field>\r\n" +
 			"  </doc>\r\n"; 
 	
 	@Before

@@ -27,6 +27,7 @@ import twitter4j.User;
 public class TwitterImporter {
 	private Properties prop;
 	private boolean verbose = true; 
+	private boolean ignoreRetweet = true; 
 	
 	protected static final Logger log = LogManager.getLogger(TwitterImporter.class);
 	
@@ -35,6 +36,9 @@ public class TwitterImporter {
 		
 		String strVerbose = prop.getProperty("verbose", "true");
 		verbose = Boolean.valueOf(strVerbose);
+		
+		String strIgnoreRetweet = prop.getProperty("ignoreretweet", "true");
+		ignoreRetweet = Boolean.valueOf(strIgnoreRetweet);		
 	}
 
 	public void start() {
@@ -54,6 +58,11 @@ public class TwitterImporter {
 			public void onStatus(Status status) {
 				if(verbose) {
 					System.out.println(status.getUser().getName() + " : " + status.getText());					
+				}
+				
+				if(status.isRetweet() && ignoreRetweet) {
+					log.debug("Ignoring retweet: " + status.getId());
+					return;
 				}
 				
 				String xmlPath = null;

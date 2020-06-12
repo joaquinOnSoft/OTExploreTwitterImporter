@@ -33,12 +33,13 @@ Configuration file that specifies the filter to apply to the Twitter stream
 
 It supports theses properties:
 
- - languages - Specifies the tweets language of the stream (You can specify more than one separated by commas)
+ - **languages** - Specifies the tweets language of the stream (You can specify more than one separated by commas)
  - keywords - Specifies keywords to track (You can specify more than one separated by commas). 
- - follow - Twitter account names separated by commas (Don't include the @), e.g. madrid to follow @madrid
- - tag - Text to be used as tag to be added automatically to each twitt. Default value: "Twitter Importer"
- - verbose - Verbose mode. Possible values: true (messages are shown in the console) or false (messages are NOT shown in the console)
- - host - Solr server URL. Default value: http://localhost:8983
+ - **follow** - Twitter account names separated by commas (Don't include the @), e.g. madrid to follow @madrid
+ - **ignoreretweet** - Ignore retweet. Possible values: true (Retweets ignored) or false (retweets imported). Default value: true 
+ - **itag** - Text to be used as tag (Importer tag) to be added automatically to each twitt. Default value: "Twitter Importer"
+ - **verbose** - Verbose mode. Possible values: true (messages are shown in the console) or false (messages are NOT shown in the console)
+ - **host** - Solr server URL. Default value: http://localhost:8983
 
 This **twitter-importer.properties** file shows an example to listen to tweets about Madrid City Hall in Spanish: 
  
@@ -48,7 +49,8 @@ keywords=Ayuntamiento de Madrid,Ayto Madrid,@MADRID
 verbose=true
 host=http://localhost:8983
 follow=madrid,lineaMadrid
-tag=Twitter Importer
+itag=Twitter Importer
+ignoreretweet=true
 ```
 
 ## Command line execution 
@@ -57,7 +59,7 @@ This utility is distributed as a runnable .jar file.
 
 These are the accepted parameters:
 
-usage: java -jar OTExploreTwitterImporter-20.2.06.jar
+usage: java -jar OTExploreTwitterImporter-20.2.06.02.jar
  * -c, --config						Define config file path
 
 ### Example of invocation
@@ -110,8 +112,8 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
           <Tag>longitude</Tag>
         </Field>
         <Field column="Source">
-          <Name>Tag</Name>
-          <Tag>tag</Tag>
+          <Name>Importer Tag</Name>
+          <Tag>itag</Tag>
         </Field>
   </DocTypes>
 ```
@@ -223,9 +225,9 @@ We must define new fields to be able to import extra metadata related with each 
   <field name="longitude_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
   <copyField source="longitude" dest="longitude_search" />
     
-  <field name="tag" type="string" indexed="true" stored="false" docValues="true" />
-  <field name="tag_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
-  <copyField source="tag" dest="tag_search" />
+  <field name="itag" type="string" indexed="true" stored="false" docValues="true" />
+  <field name="itag_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="itag" dest="itag_search" />
 
 
   <!-- END CUSTOM FIELDS -->
@@ -278,4 +280,19 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 
 > NOTE: The path of your Solr installation can vary in your environment.
 
+## Version history
 
+### 20.2 (June 3rd, 2020)
+
+* Initial version
+
+### 20.2.06 (June 8th, 2020)
+
+* New properties supported in the config file.
+* New metadata added to each tweet ingested
+  
+### 20.2.06.02 (June 12th, 2020)
+
+* Property renamed in the configuration file: tag -- itag (Importer tag)
+* New property supported in the configuration file: ignoreretweet 
+  

@@ -80,7 +80,7 @@ public class TwitterTransformer {
 					eDoc.addContent(createElementField("latitude", status.getGeoLocation().getLatitude()));
 					eDoc.addContent(createElementField("longitude", status.getGeoLocation().getLongitude()));
 				}				
-				eDoc.addContent(createElementField("tag", tag));
+				eDoc.addContent(createElementField("itag", tag));
 
 				root.addContent(eDoc);
 			}
