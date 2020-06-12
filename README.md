@@ -267,6 +267,8 @@ Once the configuration has been updated Explore will look like this:
 
 ## Create a new Project in Explore
 
+In o
+
  - Open your Explore instance.
  - Click on **Administer** in the top menu.
  - Click on **Projects**
