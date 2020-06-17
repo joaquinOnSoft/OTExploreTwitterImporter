@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 
 java {
-	version = '20.2.06.02' 
+	version = '20.2.06.17' 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }

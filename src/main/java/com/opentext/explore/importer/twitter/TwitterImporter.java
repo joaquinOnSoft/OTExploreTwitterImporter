@@ -68,7 +68,7 @@ public class TwitterImporter {
 				String xmlPath = null;
 				String xmlFileName = Long.toString(status.getId()) + ".xml";
 				try {
-					String tag = prop.getProperty("tag", "Twitter Importer");
+					String tag = prop.getProperty("itag", "Twitter Importer");
 					
 					xmlPath = TwitterTransformer.statusToXMLFile(status, xmlFileName, tag);
 					
