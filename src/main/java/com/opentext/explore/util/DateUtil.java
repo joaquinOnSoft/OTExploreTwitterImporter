@@ -6,6 +6,11 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
+/**
+ * 
+ * @author Joaquín Garzón
+ * @since 20.2
+ */
 public class DateUtil {
 	/**
 	 * Return current time in UTC format, e.g.

@@ -38,8 +38,8 @@ public class TwitterImporterLauncher {
 
 		try {
 			cmd = parser.parse(options, args);
-
-			if (args[0].equals("--config") || args[0].equals("-c")) {
+			
+			if (cmd.hasOption("config")) {
 				String configFilePath = cmd.getOptionValue("config");
 
 				if(FileUtil.isFile(configFilePath)) {

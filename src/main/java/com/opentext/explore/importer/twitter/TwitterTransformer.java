@@ -45,7 +45,7 @@ import twitter4j.Status;
  */
 public class TwitterTransformer {
 
-	private static Document statusToDoc(List<Status> statuses, String tag) {
+	private static Document statusToDoc(List<Status> statuses, String contentType, String tag) {
 		Document doc = null;
 		
 		if(statuses != null && statuses.size() > 0) {
@@ -62,7 +62,7 @@ public class TwitterTransformer {
 				eDoc.addContent(createElementField("title", status.getText()));
 				eDoc.addContent(createElementField("author_name", status.getUser().getName()));
 				eDoc.addContent(createElementField("ID", status.getId()));
-				eDoc.addContent(createElementField("type", "Twitter"));	
+				eDoc.addContent(createElementField("type", contentType));	
 				eDoc.addContent(createElementField("published_date", status.getCreatedAt()));
 				eDoc.addContent(createElementField("date_time", status.getCreatedAt()));
 				eDoc.addContent(createElementField("content", status.getText()));				
@@ -98,10 +98,10 @@ public class TwitterTransformer {
 	 * @return path of the XML file created
 	 * @throws IOException
 	 */	
-	public static String statusToXMLFile(Status status, String fileName, String tag) throws IOException {
+	public static String statusToXMLFile(Status status, String fileName, String contentType, String tag) throws IOException {
 		List<Status> statuses = new LinkedList<Status>();
 		statuses.add(status);
-		return statusesToXMLFile(statuses, fileName, tag);
+		return statusesToXMLFile(statuses, fileName, contentType, tag);
 	}
 	
 	/**
@@ -112,9 +112,9 @@ public class TwitterTransformer {
 	 * @return Absolute path of the XML file created
 	 * @throws IOException
 	 */
-	public static String statusesToXMLFile(List<Status> statuses, String fileName, String tag) throws IOException {
+	public static String statusesToXMLFile(List<Status> statuses, String fileName, String contentType, String tag) throws IOException {
 		String xmlPath = null;
-		Document doc = statusToDoc(statuses, tag);
+		Document doc = statusToDoc(statuses, contentType, tag);
 
 		if(doc != null) {
 			//Create the XML
@@ -140,9 +140,9 @@ public class TwitterTransformer {
 	 * @param statuses
 	 * @return
 	 */
-	public static String statusToString(List<Status> statuses, String tag) {
+	public static String statusToString(List<Status> statuses, String contentType, String tag) {
 		String xml = null;
-		Document doc = statusToDoc(statuses, tag);
+		Document doc = statusToDoc(statuses, contentType, tag);
 
 		if(doc != null) {
 			//Create the XML

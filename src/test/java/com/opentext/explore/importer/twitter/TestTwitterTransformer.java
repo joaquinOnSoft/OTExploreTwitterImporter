@@ -75,7 +75,7 @@ public class TestTwitterTransformer {
 		List<Status> statuses = new LinkedList<Status>();
 		statuses.add(status);
 		
-		String xml = TwitterTransformer.statusToString(statuses, "Twitter Importer");
+		String xml = TwitterTransformer.statusToString(statuses, "Twitter", "Twitter Importer");
 		
 		String expectedXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
 				"<add>\r\n" +
@@ -85,6 +85,22 @@ public class TestTwitterTransformer {
 		assertEquals(expectedXML, xml);
 	}
 	
+	@Test
+	public void testStatusToStringWithMicroMediaContentType() {
+		List<Status> statuses = new LinkedList<Status>();
+		statuses.add(status);
+		
+		String xml = TwitterTransformer.statusToString(statuses, "Micro Media", "Twitter Importer");
+		
+		String expectedXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+				"<add>\r\n" +
+				docXMLFragment.replace(">Twitter<", ">Micro Media<") +
+				"</add>\r\n";
+		
+		assertEquals(expectedXML, xml);
+	}	
+	
+	
 	@Test 
 	public void testStatusToXMLFile() {
 		String outputXML = "test_1257656312529186816.xml";
@@ -93,7 +109,7 @@ public class TestTwitterTransformer {
 		statuses.add(status);
 		
 		try {
-			TwitterTransformer.statusesToXMLFile(statuses, outputXML, "Twitter Importer");
+			TwitterTransformer.statusesToXMLFile(statuses, outputXML, "Twitter", "Twitter Importer");
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
@@ -104,5 +120,4 @@ public class TestTwitterTransformer {
 		//Remove test XML
 		xml.delete();
 	}
-
 }

@@ -39,7 +39,8 @@ It supports theses properties:
  - **ignoreretweet** - Ignore retweet. Possible values: true (Retweets ignored) or false (retweets imported). Default value: true 
  - **itag** - Text to be used as tag (Importer tag) to be added automatically to each twitt. Default value: "Twitter Importer"
  - **verbose** - Verbose mode. Possible values: true (messages are shown in the console) or false (messages are NOT shown in the console)
- - **host** - Solr server URL. Default value: http://localhost:8983
+ - **host** - (optional) Solr server URL. Default value: http://localhost:8983
+ - **content_type** - (optional) Content type. By default "Twitter", other possible values: "Micro Media"
 
 This **twitter-importer.properties** file shows an example to listen to tweets about Madrid City Hall in Spanish: 
  

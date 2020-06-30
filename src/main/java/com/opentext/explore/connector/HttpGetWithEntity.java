@@ -5,6 +5,8 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 /**
  * Apache HttpClient GET with body
  * SEE: https://stackoverflow.com/questions/12535016/apache-httpclient-get-with-body
+ * @author Joaquín Garzón
+ * @since 20.2
  */
 public class HttpGetWithEntity extends HttpEntityEnclosingRequestBase {
     public final static String METHOD_NAME = "GET";

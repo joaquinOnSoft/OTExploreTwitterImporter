@@ -12,6 +12,11 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * 
+ * @author Joaquín Garzón
+ * @since 20.2
+ */
 public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private String urlBase;
 	
@@ -20,7 +25,7 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private static final String METHOD_OTCA_BATCH_UPDATE = "/solr/interaction/otcaBatchUpdate";
 
 	public SolrAPIWrapper() {
-		this.urlBase = "http://localhost:8983";
+		this("http://localhost:8983");
 	}
 	
 	

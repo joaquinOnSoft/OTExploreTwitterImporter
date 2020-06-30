@@ -4,11 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import org.junit.Before;
@@ -22,13 +19,10 @@ public class TestTwitterImporter {
 	
 	@Before
 	public void setUp() {
-		File propFile = FileUtil.getFileFromResources("twitter4j.properties"); 
 
-		InputStream file;
 		try {
-			file = new FileInputStream(propFile.getAbsolutePath());
 			prop = new Properties();
-			prop.load(file);
+			prop.load(FileUtil.getStreamFromResources("twitter4j.properties"));
 		} 
 		catch (FileNotFoundException e) {
 			System.err.println("Properties file not found");
