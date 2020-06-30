@@ -318,4 +318,8 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 
 * Property renamed in the configuration file: tag -- itag (Importer tag)
 * New property supported in the configuration file: ignoreretweet 
+
+### 20.3 (June 30th, 2020)
+
+* New property in the configuration file: -t --type (Content type) 
   
