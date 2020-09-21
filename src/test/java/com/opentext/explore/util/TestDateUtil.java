@@ -49,4 +49,17 @@ public class TestDateUtil extends TestCase {
 		assertEquals(now.get(Calendar.MONTH) + 1, subStringToInt(nowStr, 5, 7));
 		assertEquals(now.get(Calendar.DAY_OF_MONTH), subStringToInt(nowStr, 8, 10));		
 	}
+	
+	@Test
+	public void testGetDateOneWeekAgo() {
+		Calendar now = GregorianCalendar.getInstance();
+		now.roll(Calendar.DAY_OF_YEAR, -7);
+		
+		String oneWeekAgo = DateUtil.getDateOneWeekAgo();
+		
+		assertNotNull(oneWeekAgo);
+		assertEquals(now.get(Calendar.YEAR), subStringToInt(oneWeekAgo, 0, 4));
+		assertEquals(now.get(Calendar.MONTH) + 1, subStringToInt(oneWeekAgo, 5, 7));
+		assertEquals(now.get(Calendar.DAY_OF_MONTH), subStringToInt(oneWeekAgo, 8, 10));	
+	}
 }
