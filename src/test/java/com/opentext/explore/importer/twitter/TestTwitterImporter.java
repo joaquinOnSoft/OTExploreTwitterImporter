@@ -22,7 +22,7 @@ public class TestTwitterImporter {
 
 		try {
 			prop = new Properties();
-			prop.load(FileUtil.getStreamFromResources("twitter4j.properties"));
+			prop.load(FileUtil.getStreamFromResources("twitter-importer.properties"));
 		} 
 		catch (FileNotFoundException e) {
 			System.err.println("Properties file not found");
@@ -47,5 +47,11 @@ public class TestTwitterImporter {
 		assertEquals(2, ids.length);
 		assertEquals(816178, ids[0]);
 		assertEquals(197199146, ids[1]);
+	}
+	
+	@Test
+	public void start() {
+		TwitterImporter importer = new TwitterImporter(prop);
+		importer.start();
 	}
 }
