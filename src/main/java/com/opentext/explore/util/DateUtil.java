@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -24,6 +26,11 @@ public class DateUtil {
 	public static String dateToUTC(Date d) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");  
 		return dateFormat.format(d);  
+	}	
+	
+	public static String getDateOneWeekAgo() {
+		LocalDate date = LocalDate.now().minusDays(7);
+		return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}	
 	
 	/**

@@ -2,9 +2,6 @@ package com.opentext.explore.importer.twitter;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,10 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.opentext.explore.connector.SolrAPIWrapper;
 import com.opentext.explore.util.FileUtil;
+import com.opentext.explore.util.StringUtil;
 
 import twitter4j.FilterQuery;
-import twitter4j.Query;
-import twitter4j.QueryResult;
 import twitter4j.ResponseList;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -33,15 +29,15 @@ public class TwitterImporter {
 	private Properties prop;
 	private boolean verbose = true; 
 	private boolean ignoreRetweet = true; 
-	
+
 	protected static final Logger log = LogManager.getLogger(TwitterImporter.class);
-	
+
 	public TwitterImporter(Properties prop) {
 		this.prop = prop;
-		
+
 		String strVerbose = prop.getProperty("verbose", "true");
 		verbose = Boolean.valueOf(strVerbose);
-		
+
 		String strIgnoreRetweet = prop.getProperty("ignoreretweet", "true");
 		ignoreRetweet = Boolean.valueOf(strIgnoreRetweet);		
 	}
@@ -51,54 +47,15 @@ public class TwitterImporter {
 		//TODO use a thread to run the query
 		startQueryingOldTweets();
 	}
-	
+
 	/**
 	 * <strong>Search for old Tweets (from the previous week)</strong>
 	 * Search for Tweets using Query class and Twitter.search(twitter4j.Query) method.
 	 */
 	private void startQueryingOldTweets() {
-		// The factory instance is re-useable and thread safe.
-	    Twitter twitter = TwitterFactory.getSingleton();
-	    
-	    Query query = new Query();
-	    	    
-	    String queryString= "";
-	    
-	    String keywords = prop.getProperty("keywords");
-	    if(keywords != null) {
-	    	queryString +=  keywords.replace(",", " OR ");
-	    }
-	    
-		/*
-		 * String follow = prop.getProperty("follow"); if(follow != null) { queryString
-		 * += " from: " + follow.replace(",", " "); }
-		 */
-	    
-	    System.out.println("QUERY STRING: " + queryString);
-	    
-	    query.setQuery(queryString);
-	    query.setSince(getDateOneWeekAgo());
-	    
-	    String[] languages = stringToArrayString(prop.getProperty("languages"));
-	    if(languages != null && languages.length > 0) {
-	    	query.setLang(languages[0]);	
-	    }	    
-	    
-	    QueryResult result = null;
-	    
-	    try {
-	        do {
-	            result = twitter.search(query);
-	            List<Status> tweets = result.getTweets();
-	            for (Status tweet : tweets) {
-	                System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-	            }
-	        } while ((query = result.nextQuery()) != null);
-	    } catch (TwitterException te) {
-	        te.printStackTrace();
-	        System.out.println("Failed to search tweets: " + te.getMessage());
-	        System.exit(-1);
-	    }
+		TwitterImporterQueryOldTweets queryOldTweets = new TwitterImporterQueryOldTweets(prop);
+		Thread t = new Thread(queryOldTweets, "Query old Tweets");
+		t.start();
 	}
 
 	/**
@@ -123,21 +80,20 @@ public class TwitterImporter {
 				if(verbose) {
 					System.out.println(status.getUser().getName() + " : " + status.getText());					
 				}
-				
+
 				if(status.isRetweet() && ignoreRetweet) {
 					log.debug("Ignoring retweet: " + status.getId());
 					return;
 				}
-				
+
 				String xmlPath = null;
 				String xmlFileName = Long.toString(status.getId()) + ".xml";
 				try {
 					String tag = prop.getProperty("tag", "Twitter Importer");
 					String contentType = prop.getProperty("content_type", "Twitter");
 
-					
 					xmlPath = TwitterTransformer.statusToXMLFile(status, xmlFileName, contentType, tag);
-					
+
 					String host = prop.getProperty("host");
 					SolrAPIWrapper wrapper = null;
 					if(host == null)
@@ -153,7 +109,7 @@ public class TwitterImporter {
 					if(xmlPath != null) {
 						FileUtil.deleteFile(xmlPath);	
 					}
-					
+
 				}
 			}
 
@@ -172,36 +128,26 @@ public class TwitterImporter {
 			@Override
 			public void onStallWarning(StallWarning warning) {
 			}
-	    };
-	    	   
-	    TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
-	    twitterStream.addListener(listener);
+		};
 
-	    FilterQuery filter = new FilterQuery();
-	    filter.track(stringToArrayString(prop.getProperty("keywords")));
-	    filter.language(stringToArrayString(prop.getProperty("languages")));
-	    
-	    String[] followStr = stringToArrayString(prop.getProperty("follow"));
-	    if(followStr != null && followStr.length > 0) {
-	    	filter.follow(getUserIdByScreenName(followStr));
-	    }
-	    
-	    twitterStream.filter(filter);
+		TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+		twitterStream.addListener(listener);
+
+		FilterQuery filter = new FilterQuery();
+		filter.track(StringUtil.stringToArrayString(prop.getProperty("keywords")));
+		filter.language(StringUtil.stringToArrayString(prop.getProperty("languages")));
+
+		String[] followStr = StringUtil.stringToArrayString(prop.getProperty("follow"));
+		if(followStr != null && followStr.length > 0) {
+			filter.follow(getUserIdByScreenName(followStr));
+		}
+
+		twitterStream.filter(filter);
 	}
-	
-	private String[] stringToArrayString(String value) {
-		if(value != null) {
-			return value.split(",");
-		}
-		else {
-			return new String[] {};
-		}
-		
-	}	
 	
 	protected long[] getUserIdByScreenName(String[] screenName) {
 		long[] ids = {};
-		
+
 		Twitter t = new TwitterFactory().getInstance();
 		ResponseList<User> users = null;
 		try {
@@ -216,15 +162,9 @@ public class TwitterImporter {
 				ids[i] =usr.getId();
 				i++;
 			}
-			
+
 		}
-		
+
 		return ids;
-	}
-	
-	
-	private String getDateOneWeekAgo() {
-		LocalDate date = LocalDate.now().minusDays(7);
-		return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 }
