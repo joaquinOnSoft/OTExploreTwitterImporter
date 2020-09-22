@@ -17,7 +17,7 @@ public class TwitterImporter {
 	}
 
 	public void start() {
-		//startStreamingAPI();
+		startStreamingAPI();
 		startQueryingOldTweets();
 	}
 

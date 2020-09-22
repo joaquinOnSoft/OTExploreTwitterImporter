@@ -22,7 +22,7 @@ public abstract class AbstractTwitterImporter {
 		ignoreRetweet = Boolean.valueOf(strIgnoreRetweet);	
 		
 		keywords = prop.getProperty("keywords");
-		tag = prop.getProperty("tag", "Twitter Importer");
+		tag = prop.getProperty("itag", "Twitter Importer");
 		contentType = prop.getProperty("content_type", "Twitter"); 
 		host = prop.getProperty("host");
 		
