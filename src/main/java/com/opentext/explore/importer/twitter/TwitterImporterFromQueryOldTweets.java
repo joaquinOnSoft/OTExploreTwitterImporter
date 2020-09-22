@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.opentext.explore.util.DateUtil;
-import com.opentext.explore.util.StringUtil;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -16,7 +15,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
-public class TwitterImporterQueryOldTweets implements Runnable {
+public class TwitterImporterFromQueryOldTweets extends AbstractTwitterImporter implements Runnable {
 	private static final int MILISECONDS_IN_SECOND = 1000;
 
 	/**
@@ -29,12 +28,9 @@ public class TwitterImporterQueryOldTweets implements Runnable {
 	private static final int STATUS_CODE_RATE_LIMIT = 429;
 	
 	protected static final Logger log = LogManager.getLogger(TwitterImporter.class);
-	
-	private Properties prop;
 
-
-	public TwitterImporterQueryOldTweets(Properties prop) {
-		this.prop = prop;
+	public TwitterImporterFromQueryOldTweets(Properties prop) {
+		super(prop);		
 	}
 	
 	@Override
@@ -46,7 +42,6 @@ public class TwitterImporterQueryOldTweets implements Runnable {
 
 		String queryString= "";
 
-		String keywords = prop.getProperty("keywords");
 		if(keywords != null) {
 			queryString +=  keywords.replace(",", " OR ");
 		}
@@ -61,7 +56,6 @@ public class TwitterImporterQueryOldTweets implements Runnable {
 		query.setQuery(queryString);
 		query.setSince(DateUtil.getDateOneWeekAgo());
 
-		String[] languages = StringUtil.stringToArrayString(prop.getProperty("languages"));
 		if(languages != null && languages.length > 0) {
 			query.setLang(languages[0]);	
 		}	    
