@@ -15,8 +15,13 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
+/**
+ * <strong>Search for old Tweets (from the previous week)</strong>
+ * Search for Tweets using Query class and Twitter.search(twitter4j.Query) method.
+ */
 public class TwitterImporterFromQueryOldTweets extends AbstractTwitterImporter implements Runnable {
 	private static final int MILISECONDS_IN_SECOND = 1000;
+	private static final int SECONDS_IN_15_MIN = 900;
 
 	/**
 	 * 429:Returned in API v1.1 when a request cannot be served due to the application's 
@@ -67,8 +72,9 @@ public class TwitterImporterFromQueryOldTweets extends AbstractTwitterImporter i
 				result = twitter.search(query);
 				List<Status> tweets = result.getTweets();
 				for (Status tweet : tweets) {
-					System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
 					log.debug("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+					
+					StatusConsolidator.ingest(tweet, verbose, ignoreRetweet, tag, contentType, host);					
 				}
 			} catch (TwitterException te) {
 				log.error(te);
@@ -76,10 +82,18 @@ public class TwitterImporterFromQueryOldTweets extends AbstractTwitterImporter i
 				if(te.getStatusCode() == STATUS_CODE_RATE_LIMIT) {
 					log.error("RATE LIMIT REACHED >>>>>>>>>>>>>>>>>>>>> ");
 					int seconds = te.getRetryAfter();
+					log.debug("Retry after " + seconds + " seconds");
+
+					if(seconds < 0) {
+						seconds = SECONDS_IN_15_MIN;
+					}
+					log.info("Sleeping " + seconds + " seconds");
+
 					try {
 						Thread.sleep(seconds * MILISECONDS_IN_SECOND);
 					} catch (InterruptedException e) {
-						log.error("Fail on sleept: " + e.getMessage());
+						log.error("Fail on sleep: " + e.getMessage());
+						System.exit(-1);
 					}
 				}
 				else {

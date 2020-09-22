@@ -17,9 +17,8 @@ public class TwitterImporter {
 	}
 
 	public void start() {
-		startStreamingAPI();
-		//TODO use a thread to run the query
-		//startQueryingOldTweets();
+		//startStreamingAPI();
+		startQueryingOldTweets();
 	}
 
 	/**

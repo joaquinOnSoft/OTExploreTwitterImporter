@@ -15,13 +15,13 @@ This utility is distributed as a runnable .jar file.
 
 These are the accepted parameters:
 
-usage: java -jar OTExploreTwitterImporter-20.2.06.02.jar
+usage: java -jar OTExploreTwitterImporter-20.3.9.jar
  * -c, --config						Define config file path
 
 ### Example of invocation
 
 ```
-$ java -jar OTExploreTwitterImporter-20.2.jar --config "C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties"
+$ java -jar OTExploreTwitterImporter-20.3.9.jar --config "C:\ProgramFiles\OTExploreTwitterImporter\twitter-importer.properties"
 ```
 
 ## Configuration file: twitter-importer.properties
@@ -324,4 +324,8 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 ### 20.3 (June 30th, 2020)
 
 * New property in the configuration file: -t --type (Content type) 
+
+### 20.3.9 (September 22th, 2020)
+
+* Query old tweets (one week in the past by default)
   
