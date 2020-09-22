@@ -43,9 +43,9 @@ public class TwitterImporter {
 	}
 
 	public void start() {
-		//startStreamingAPI();
+		startStreamingAPI();
 		//TODO use a thread to run the query
-		startQueryingOldTweets();
+		//startQueryingOldTweets();
 	}
 
 	/**
@@ -68,68 +68,11 @@ public class TwitterImporter {
 	 */
 	private void startStreamingAPI() {
 
-		StatusListener listener = new StatusListener(){
-
-			@Override
-			public void onException(Exception ex) {	
-				log.error("Exception on status listener: " + ex.getLocalizedMessage());
-			}
-
-			@Override
-			public void onStatus(Status status) {
-				if(verbose) {
-					System.out.println(status.getUser().getName() + " : " + status.getText());					
-				}
-
-				if(status.isRetweet() && ignoreRetweet) {
-					log.debug("Ignoring retweet: " + status.getId());
-					return;
-				}
-
-				String xmlPath = null;
-				String xmlFileName = Long.toString(status.getId()) + ".xml";
-				try {
-					String tag = prop.getProperty("tag", "Twitter Importer");
-					String contentType = prop.getProperty("content_type", "Twitter");
-
-					xmlPath = TwitterTransformer.statusToXMLFile(status, xmlFileName, contentType, tag);
-
-					String host = prop.getProperty("host");
-					SolrAPIWrapper wrapper = null;
-					if(host == null)
-						wrapper = new SolrAPIWrapper();
-					else {
-						wrapper = new SolrAPIWrapper(host);
-					}
-					wrapper.otcaBatchUpdate(new File(xmlPath));	
-				} catch (IOException e) {
-					log.error(e.getMessage());
-				}
-				finally {
-					if(xmlPath != null) {
-						FileUtil.deleteFile(xmlPath);	
-					}
-
-				}
-			}
-
-			@Override
-			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {				
-			}
-
-			@Override
-			public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-			}
-
-			@Override
-			public void onScrubGeo(long userId, long upToStatusId) {
-			}
-
-			@Override
-			public void onStallWarning(StallWarning warning) {
-			}
-		};
-
+		StatusListener listener = StatusListenerFactory.getListener(verbose, ignoreRetweet, 
+				prop.getProperty("tag", "Twitter Importer"), 
+				prop.getProperty("content_type", "Twitter"), 
+				prop.getProperty("host"));
+		
 		TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 		twitterStream.addListener(listener);
 

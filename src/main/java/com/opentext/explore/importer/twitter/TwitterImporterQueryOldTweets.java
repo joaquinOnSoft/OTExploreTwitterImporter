@@ -17,6 +17,8 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 public class TwitterImporterQueryOldTweets implements Runnable {
+	private static final int MILISECONDS_IN_SECOND = 1000;
+
 	/**
 	 * 429:Returned in API v1.1 when a request cannot be served due to the application's 
 	 * rate limit having been exhausted for the resource. See Rate Limiting in 
@@ -54,7 +56,7 @@ public class TwitterImporterQueryOldTweets implements Runnable {
 		 * += " from: " + follow.replace(",", " "); }
 		 */
 
-		System.out.println("QUERY STRING: " + queryString);
+		log.debug("QUERY STRING: " + queryString);
 
 		query.setQuery(queryString);
 		query.setSince(DateUtil.getDateOneWeekAgo());
@@ -78,11 +80,15 @@ public class TwitterImporterQueryOldTweets implements Runnable {
 				log.error(te);
 
 				if(te.getStatusCode() == STATUS_CODE_RATE_LIMIT) {
-					System.out.println("RATE LIMIT REACHED >>>>>>>>>>>>>>>>>>>>> ");
 					log.error("RATE LIMIT REACHED >>>>>>>>>>>>>>>>>>>>> ");
+					int seconds = te.getRetryAfter();
+					try {
+						Thread.sleep(seconds * MILISECONDS_IN_SECOND);
+					} catch (InterruptedException e) {
+						log.error("Fail on sleept: " + e.getMessage());
+					}
 				}
 				else {
-					System.out.println("Failed to search tweets: " + te.getMessage());
 					log.error("Failed to search tweets: " + te.getMessage());
 					System.exit(-1);	    		
 				}
