@@ -87,7 +87,8 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
 
 ```xml
   <DocTypes>
-    ...  
+    ... 
+    <DocType> 
       <Name>Twitter</Name>
       <GridFields>
         <Field column="Source">
@@ -118,6 +119,7 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
           <Name>Importer Tag</Name>
           <Tag>itag</Tag>
         </Field>
+	</DocType>        
   </DocTypes>
 ```
 
